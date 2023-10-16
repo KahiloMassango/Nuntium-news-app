@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Nuntium</string>
+    <string name="next">Next</string>
+    <string name="welcome_message">I am happy to see you again. You can continue where you left off by logging in</string>
+    <string name="email_placeholder">Email Address</string>
+    <string name="password_placeholder">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">or</string>
+</resources>
