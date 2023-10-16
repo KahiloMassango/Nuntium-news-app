@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +34,8 @@ fun CustomButton(
     onClick: () -> Unit
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .height(56.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
@@ -41,7 +43,6 @@ fun CustomButton(
         onClick = onClick
     ) {
         Text(
-            modifier = Modifier.padding(vertical = 12.dp),
             text = text,
             fontSize = 16.sp,
             fontFamily = SfProFontFamily,
@@ -59,17 +60,17 @@ fun CustomSignInButton(
    @DrawableRes icon: Int
 ) {
     OutlinedButton(
-        modifier = modifier,
+        modifier = modifier
+            .height(58.dp),
         shape = RoundedCornerShape(12.dp),
         onClick = onClick,
-        border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.surfaceVariant),
+        border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.surfaceVariant),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(vertical = 12.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(42.dp)
         ) {
