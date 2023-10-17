@@ -89,8 +89,10 @@ fun CustomTextField(
     )
 }
 @Composable
-fun CustomSignInText(
+fun CustomClickableText(
     modifier: Modifier = Modifier,
+    firstText: String,
+    secondText: String,
     onCLick: () -> Unit
 ) {
     val text = buildAnnotatedString{
@@ -101,16 +103,17 @@ fun CustomSignInText(
 
             )
         ) {
-            append("Don't have an account? ")
+            append(firstText)
         }
-
+        // add space between the two texts
+        append(" ")
         withStyle(style = SpanStyle(
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.W500,
             fontSize = 16.sp
         )
         ) {
-            append("Sign Up")
+            append(secondText)
         }
     }
 
