@@ -53,18 +53,14 @@ fun SignInScreen() {
             Text(
                 modifier = Modifier.padding(top = 0.dp),
                 text = "Welcome Back \uD83D\uDC4B",
-                fontFamily = SfProFontFamily,
-                fontWeight = FontWeight.W600,
-                fontSize = 24.sp,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 modifier = Modifier
                     .padding(top = 8.dp),
                 text = stringResource(R.string.welcome_message),
-                fontFamily = SfProFontFamily,
-                fontWeight = FontWeight.W400,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.tertiary
             )
             Spacer(modifier = Modifier.height(32.dp))

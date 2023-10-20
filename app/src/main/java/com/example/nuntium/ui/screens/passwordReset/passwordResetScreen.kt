@@ -24,7 +24,6 @@ import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.CustomTextField
 import com.example.nuntium.ui.common.defaultPadding
-import com.example.nuntium.ui.theme.NuntiumTheme
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable

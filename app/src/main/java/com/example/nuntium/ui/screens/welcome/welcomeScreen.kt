@@ -16,14 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
-import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
 fun WelcomeScreen(
@@ -51,9 +48,7 @@ fun WelcomeScreen(
             modifier = Modifier
                 .width(216.dp),
             text = "All news in one place, be the first to know last news",
-            fontFamily = SfProFontFamily,
-            fontWeight = FontWeight.W500,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.tertiary
 

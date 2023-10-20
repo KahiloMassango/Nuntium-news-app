@@ -79,10 +79,8 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .width(216.dp)
                     .padding(top = 10.dp),
-                text = "All news in one place, be the first to know last news",
-                fontFamily = SfProFontFamily,
-                fontWeight = FontWeight.W400,
-                fontSize = 16.sp,
+                text = stringResource(R.string.first_to_know_into),
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.tertiary
             )
