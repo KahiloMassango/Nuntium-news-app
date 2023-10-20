@@ -1,5 +1,8 @@
 package com.example.nuntium.ui.common
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -54,21 +57,31 @@ fun CategoryItem(
     selected: Boolean,
     onClick: (String) -> Unit
 ) {
+    val cardAnimatedColor by animateColorAsState(
+        if(selected) MaterialTheme.colorScheme.primary else
+            MaterialTheme.colorScheme.surfaceVariant,
+        animationSpec = tween(300, easing = LinearEasing),
+        label = ""
+    )
+    val textColor by animateColorAsState(
+        if (selected) MaterialTheme.colorScheme.background else
+            MaterialTheme.colorScheme.tertiary,
+        animationSpec = tween(300, easing = LinearEasing),
+        label = ""
+    )
     Card(
         modifier = modifier
             .clip(RoundedCornerShape(24.dp))
             .clickable { onClick(topic.name) },
         colors = CardDefaults.cardColors(
-            containerColor = if(selected) MaterialTheme.colorScheme.primary else
-                MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = cardAnimatedColor,
         )
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             text = topic.name,
             style = MaterialTheme.typography.bodyMedium,
-            color = if (selected) MaterialTheme.colorScheme.background else
-                MaterialTheme.colorScheme.tertiary,
+            color = textColor,
         )
     }
 }
