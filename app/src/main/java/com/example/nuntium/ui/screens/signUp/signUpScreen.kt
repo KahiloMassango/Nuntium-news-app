@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.RemoveRedEye
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.CustomClickableText
 import com.example.nuntium.ui.common.CustomTextField
+import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
@@ -38,7 +38,7 @@ fun SignUpScreen() {
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 28.dp, bottom = 8.dp)
+            .padding(defaultPadding)
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -140,7 +140,7 @@ fun SignUpScreen() {
 
         CustomClickableText(
             modifier = Modifier
-                .padding(top = 0.dp)
+                .padding(bottom = 10.dp)
                 .fillMaxWidth(),
             firstText = stringResource(R.string.already_have_an_account),
             secondText = stringResource(R.string.sign_in),

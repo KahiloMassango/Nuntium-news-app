@@ -35,6 +35,7 @@ import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.CustomClickableText
 import com.example.nuntium.ui.common.CustomSignInButton
 import com.example.nuntium.ui.common.CustomTextField
+import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
@@ -42,7 +43,7 @@ fun SignInScreen() {
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 28.dp, bottom = 8.dp)
+            .padding(defaultPadding)
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -143,7 +144,7 @@ fun SignInScreen() {
 
         CustomClickableText(
             modifier = Modifier
-                .padding(top = 50.dp)
+                .padding(top = 50.dp, bottom = 10.dp)
                 .fillMaxWidth(),
             firstText = stringResource(R.string.don_t_have_an_account),
             secondText = stringResource(R.string.sign_up),

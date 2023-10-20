@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.CustomTextField
+import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.theme.NuntiumTheme
 import com.example.nuntium.ui.theme.SfProFontFamily
 
@@ -31,7 +32,7 @@ fun PasswordResetScreen() {
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 28.dp)
+            .padding(defaultPadding)
             .fillMaxSize(),
     ) {
         Text(
