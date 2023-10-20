@@ -1,0 +1,45 @@
+package com.example.nuntium.ui.common
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MicNone
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.example.nuntium.R
+
+@Composable
+fun SearchContainer(
+    modifier: Modifier = Modifier,
+    searchText: String,
+    onValueChange: (String) -> Unit,
+    onSearch: () -> Unit
+) {
+    CustomTextField(
+        modifier = modifier
+            .padding(top = 32.dp)
+            .fillMaxWidth(),
+        value = searchText,
+        onValueChange = { onValueChange(it) },
+        placeholder = stringResource(R.string.search_placeholder),
+        leadingIcon = Icons.Outlined.Search,
+        trailingIcon = Icons.Outlined.MicNone,
+        keyboardOptions = KeyboardOptions(
+            autoCorrect = true,
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
+        ),
+        keyboardAction = KeyboardActions(
+            onSearch = { onSearch() }
+        )
+    )
+
+
+}
