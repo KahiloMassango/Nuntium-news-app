@@ -26,7 +26,7 @@ import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
-fun welcomeScreen(
+fun WelcomeScreen(
     onGetStarted: () -> Unit
 ) {
     Column(
@@ -74,6 +74,6 @@ fun welcomeScreen(
 @Composable
 fun welcomeScreenPreview(){
     MaterialTheme {
-        welcomeScreen(onGetStarted = { })
+        WelcomeScreen(onGetStarted = { })
     }
 }

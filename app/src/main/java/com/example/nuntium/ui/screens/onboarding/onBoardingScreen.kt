@@ -27,7 +27,7 @@ import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
-fun onBoardingScreen(
+fun OnBoardingScreen(
     onNext: () -> Unit
 ) {
     Column(
@@ -99,8 +99,8 @@ fun onBoardingScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun onBoardingScreePreview(){
+fun OnBoardingScreePreview(){
     MaterialTheme {
-        onBoardingScreen(onNext = { })
+        OnBoardingScreen(onNext = { })
     }
 }

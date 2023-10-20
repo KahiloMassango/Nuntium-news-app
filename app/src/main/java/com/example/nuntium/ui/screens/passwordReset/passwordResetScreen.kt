@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.sp
 import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.CustomTextField
+import com.example.nuntium.ui.theme.NuntiumTheme
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
-fun passwordResetScreen() {
+fun PasswordResetScreen() {
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
@@ -81,8 +82,8 @@ fun passwordResetScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun passwordResetScreenPreview() {
+fun PasswordResetScreenPreview() {
     MaterialTheme {
-        passwordResetScreen()
+        PasswordResetScreen()
     }
 }

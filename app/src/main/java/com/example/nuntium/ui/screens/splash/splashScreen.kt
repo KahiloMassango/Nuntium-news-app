@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.nuntium.R
 
 @Composable
-fun splashScreen() {
+fun SplashScreen() {
     Column(
         modifier = Modifier
             .background(Color(0xFF475AD7))
@@ -32,8 +32,8 @@ fun splashScreen() {
 
 @Preview
 @Composable
-fun splashScreePreview(){
+fun SplashScreePreview(){
     MaterialTheme {
-        splashScreen()
+        SplashScreen()
     }
 }
