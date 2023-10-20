@@ -37,8 +37,7 @@ import kotlinx.coroutines.flow.StateFlow
 const val TAG = "topic"
 data class Topic(
     val emoji:String,
-    val name: String,
-    var selected: Boolean = false
+    val name: String
 )
 
 val topicList = mutableListOf<Topic>(
@@ -66,18 +65,14 @@ fun SelectTopicsScreen() {
         Text(
             modifier = Modifier,
             text = stringResource(R.string.select_your_favorite_topics),
-            fontFamily = SfProFontFamily,
-            fontWeight = FontWeight.W600,
-            fontSize = 24.sp,
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             modifier = Modifier
                 .padding(top = 8.dp),
             text = stringResource(R.string.select_favorite_topics_info),
-            fontFamily = SfProFontFamily,
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.tertiary
         )
 
