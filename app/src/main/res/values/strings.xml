@@ -4,6 +4,7 @@
     <string name="done">Done</string>
     <string name="welcome_message">I am happy to see you again. You can continue where you left off by logging in</string>
     <string name="email_placeholder">Email Address</string>
+    <string name="search_placeholder">Search</string>
     <string name="password_placeholder">Password</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
@@ -19,4 +20,5 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="select_your_favorite_topics">Select your favorite topics</string>
     <string name="select_favorite_topics_info">Select some of your favorite topics to let us suggest better news for you.</string>
+    <string name="first_to_know_into">All news in one place, be the first to know last news</string>
 </resources>
