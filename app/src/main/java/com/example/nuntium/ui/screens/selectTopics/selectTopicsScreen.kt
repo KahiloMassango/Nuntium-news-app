@@ -31,32 +31,26 @@ import com.example.nuntium.ui.common.CustomButton
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.theme.NuntiumTheme
 import com.example.nuntium.ui.theme.SfProFontFamily
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
-const val TAG = "topic"
 data class Topic(
     val emoji:String,
     val name: String
 )
 
 val topicList = mutableListOf<Topic>(
+    Topic("\uD83C\uDFC8", name = "General"),
     Topic("\uD83C\uDFC8", name = "Sports"),
-    Topic("⚖️", name = "Politics"),
-    Topic("\uD83C\uDF1E", name = "Life"),
-    Topic("\uD83C\uDFAE", name = "Gaming"),
-    Topic("\uD83D\uDC3B", name = "Animals"),
-    Topic("\uD83C\uDF34", name = "Nature"),
-    Topic("\uD83C\uDF54", name = "Food"),
-    Topic("\uD83C\uDFA8", name = "Art"),
-    Topic("\uD83D\uDCDC", name = "History"),
-    Topic("\uD83D\uDC57", name = "Fashion")
+    Topic("⚖️", name = "Business"),
+    Topic("\uD83C\uDF1E", name = "Entertainment"),
+    Topic("\uD83D\uDC3B", name = "Health"),
+    Topic("\uD83C\uDF34", name = "Science"),
+    Topic("\uD83C\uDFA8", name = "Technology")
 )
 
 
 @Composable
 fun SelectTopicsScreen() {
-    var selectedTopics  = remember { mutableStateListOf<String>() }
+    val selectedTopics  = remember { mutableStateListOf<String>() }
     Column(
         modifier = Modifier
             .padding(defaultPadding)
