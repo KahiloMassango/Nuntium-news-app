@@ -1,39 +1,84 @@
 package com.example.nuntium.ui.screens.homePage
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nuntium.R
-import com.example.nuntium.ui.common.BigNewsSlider
+import com.example.nuntium.data.model.Data
 import com.example.nuntium.ui.common.CategorySlider
+import com.example.nuntium.ui.common.NewsList
 import com.example.nuntium.ui.common.SearchContainer
-import com.example.nuntium.ui.common.SmallNewsList
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.screens.selectTopics.topicList
-import com.example.nuntium.ui.theme.NuntiumTheme
 
 @Composable
-fun HomeScreen() {
-    val focusManager = LocalFocusManager.current
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+) {
+    val uiState by homeViewModel.uiState.collectAsState()
 
+    when(uiState) {
+        is HomeUiState.Success -> {
+            val successState = uiState as HomeUiState.Success
+            SuccessScreen(
+                newsList = successState.newsList,
+                searchText = homeViewModel.searchText,
+                onSearchTextChange = { homeViewModel.updateSearchText(it) },
+                onSearch = homeViewModel::getNewsByKeyword,
+                onCategoryChange = { category ->
+                    homeViewModel.getNewsByCategory(category)
+                }
+            )
+        }
+        HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
+        HomeUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize()) // Handle loading state
+    }
+}
+
+
+@Composable
+fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "loading failed", modifier = Modifier.padding(16.dp))
+        Button(onClick = retryAction) {
+            Text("retry")
+        }
+    }
+}
+@Composable
+fun SuccessScreen(
+    newsList: List<Data>,
+    searchText: String,
+    onSearch: () -> Unit,
+    onCategoryChange: (String) -> Unit,
+    onSearchTextChange: (String) -> Unit,
+) {
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(defaultPadding)
-            .scrollable(rememberScrollState(), Orientation.Vertical)
     ) {
         Text(
             text = stringResource(R.string.browse),
@@ -49,44 +94,35 @@ fun HomeScreen() {
             modifier = Modifier
                 .padding(top = 32.dp)
                 .fillMaxWidth(),
-            searchText = "",
-            onValueChange = { /* TODO */ },
-            onSearch = { /* TODO */ }
+            searchText = searchText,
+            onValueChange = { onSearchTextChange(it) },
+            onSearch = {
+                focusManager.clearFocus()
+                onSearch()
+            }
         )
         CategorySlider(
             modifier = Modifier
                 .padding(top = 24.dp)
                 .fillMaxWidth(),
             topicList = topicList,
-            onClick =  { /* TODO */ }
+            onClick =  { onCategoryChange(it) }
         )
-        BigNewsSlider(
+        NewsList(
             modifier = Modifier
                 .padding(top = 24.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            news = newsList
         )
-        Row(
-            modifier = Modifier
-                .padding(top = 48.dp)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(R.string.recommended_for_you),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-        SmallNewsList(
-            modifier = Modifier
-                .padding(top = 24.dp)
-                .fillMaxWidth()
-        )
+
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    NuntiumTheme {
-        HomeScreen()
-    }
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = "Loading"
+    )
 }
