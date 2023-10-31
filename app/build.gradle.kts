@@ -56,7 +56,7 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.5.2"
+    val roomVersion = "2.6.0"
     val retrofitVersion = "2.9.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended-android:1.5.3")
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
 
     // viewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
@@ -81,6 +81,9 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    // coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
 
     testImplementation("junit:junit:4.13.2")
