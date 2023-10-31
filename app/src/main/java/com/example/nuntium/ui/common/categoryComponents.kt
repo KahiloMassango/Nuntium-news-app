@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.nuntium.ui.screens.selectTopics.Topic
 
@@ -40,8 +41,8 @@ fun CategorySlider(
                     topic = topic,
                     selected = index == selected,
                     onClick = { category ->
-                        onClick(category)
                         selected = index
+                        onClick(category.lowercase())
                     }
                 )
             }
@@ -82,6 +83,8 @@ fun CategoryItem(
             text = topic.name,
             style = MaterialTheme.typography.bodyMedium,
             color = textColor,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
