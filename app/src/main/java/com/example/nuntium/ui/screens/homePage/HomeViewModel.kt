@@ -62,7 +62,6 @@ class HomeViewModel(
 
     fun getRecommendedNews() {
         viewModelScope.launch(Dispatchers.IO) {
-            searchText = ""
             _uiState.value = HomeUiState.Loading
             _uiState.value = try {
                 HomeUiState.Success(newsList = newsRepository.getRecommendedNews())

@@ -3,9 +3,13 @@ package com.example.nuntium.ui.common
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -17,17 +21,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.nuntium.ui.screens.selectTopics.Topic
+import androidx.compose.ui.unit.sp
+import com.example.nuntium.ui.screens.category.Category
+import com.example.nuntium.ui.theme.SfProFontFamily
 
 
 @Composable
 fun CategorySlider(
     modifier: Modifier = Modifier,
-    topicList: List<Topic>,
+    topicList: List<Category>,
     onClick: (String) -> Unit
 ) {
     var selected by rememberSaveable { mutableIntStateOf(0) }
@@ -54,7 +63,7 @@ fun CategorySlider(
 @Composable
 fun CategoryItem(
     modifier: Modifier = Modifier,
-    topic: Topic,
+    topic: Category,
     selected: Boolean,
     onClick: (String) -> Unit
 ) {
@@ -86,6 +95,40 @@ fun CategoryItem(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
+    }
+}
+
+@Composable
+fun CategoryCard(
+    modifier: Modifier = Modifier,
+    categoryItem: Category,
+    onClick: (String) -> Unit,
+){
+    Card(
+        modifier = modifier
+            .size(width = 160.dp, height = 72.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onClick(categoryItem.name) },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
+        border = BorderStroke(1.dp, Color(0x52ACAFC3))
+    ) {
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "${categoryItem.emoji} ${categoryItem.name}",
+                fontFamily = SfProFontFamily,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W600,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
     }
 }
 
