@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.nuntium.ui.screens.category.CategoryScreen
+import com.example.nuntium.ui.screens.bookmarks.BookmarksScreen
+import com.example.nuntium.ui.screens.homePage.HomeScreen
 import com.example.nuntium.ui.theme.NuntiumTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CategoryScreen()
+                    HomeScreen()
                 }
             }
         }

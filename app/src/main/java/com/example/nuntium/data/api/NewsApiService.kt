@@ -1,6 +1,6 @@
 package com.example.nuntium.data.api
 
-import com.example.nuntium.data.model.News
+import com.example.nuntium.data.model.NewsData
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,18 +12,18 @@ interface NewsApiService {
     suspend fun getNewsByCategory(
         @Query("categories") category: String,
         @Query("access_key") accessKey: String = apiKey
-    ): News
+    ): NewsData
 
     @GET("news?limit=10")
     suspend fun getNewsByKeyword(
         @Query("keywords") keyword: String,
         @Query("access_key") accessKey: String = apiKey
-    ): News
+    ): NewsData
 
     @GET("news?limit=10&countries=us,gb,de,au")
     suspend fun getRecommendedNews(
         @Query("access_key") accessKey: String = apiKey
-    ): News
+    ): NewsData
 
 
 }

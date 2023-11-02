@@ -25,4 +25,7 @@
     <string name="discover_things_of_this_world">Discover things of this world</string>
     <string name="recommended_for_you">Recommended for you</string>
     <string name="mediastack_access_key">67996391eb853956378810bea63d15a8</string>
+    <string name="empty_bookmarks_list">You haven\'t saved any articles yet. Start reading and bookmarking them now</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="saved_articles_to_the_library">Saved articles to the library</string>
 </resources>

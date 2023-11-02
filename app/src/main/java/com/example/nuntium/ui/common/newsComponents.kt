@@ -1,7 +1,6 @@
 package com.example.nuntium.ui.common
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,12 +31,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.nuntium.data.model.Data
+import com.example.nuntium.data.model.News
 
 @Composable
 fun NewsList(
     modifier: Modifier = Modifier,
-    news: List<Data>
+    news: List<News>
 ) {
     LazyColumn(
         modifier = modifier,
@@ -58,7 +55,7 @@ fun NewsList(
 @Composable
 fun SmallNewsList(
     modifier: Modifier = Modifier,
-    newsList: List<Data>
+    newsList: List<News>
 ) {
     val state = rememberLazyListState()
     LazyColumn(
@@ -80,8 +77,8 @@ fun SmallNewsList(
 @Composable
 fun SmallNewsCardItem(
     modifier: Modifier = Modifier,
-    onClick: (Data) -> Unit,
-    news: Data
+    onClick: (News) -> Unit,
+    news: News
 ) {
     Card(
         modifier = modifier
@@ -128,9 +125,9 @@ fun SmallNewsCardItem(
 @Composable
 fun NewsCard(
     modifier: Modifier = Modifier,
-    onClick: (Data) -> Unit,
+    onClick: (News) -> Unit,
     onBookmark: () -> Unit,
-    news: Data
+    news: News
 ) {
     Card(
         colors = CardDefaults.cardColors(

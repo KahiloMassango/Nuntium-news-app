@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.nuntium.data.model.Data
+import com.example.nuntium.data.model.News
 import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.di.NuntiumApplication
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ import java.io.IOException
 sealed interface HomeUiState {
     data class Success(
         val newsList
-        : List<Data> = emptyList(),
+        : List<News> = emptyList(),
     ) : HomeUiState
     object Error : HomeUiState
     object Loading : HomeUiState

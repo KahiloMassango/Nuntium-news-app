@@ -34,7 +34,7 @@ val Typography = Typography(
     bodySmall = TextStyle(
         fontFamily = SfProFontFamily,
         fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
     )
 
 )
