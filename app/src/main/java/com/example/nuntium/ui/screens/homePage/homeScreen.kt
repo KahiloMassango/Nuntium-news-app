@@ -25,11 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nuntium.R
-import com.example.nuntium.data.model.Data
+import com.example.nuntium.data.model.News
 import com.example.nuntium.ui.common.BottomBar
 import com.example.nuntium.ui.common.CategorySlider
 import com.example.nuntium.ui.common.NewsList
 import com.example.nuntium.ui.common.SearchContainer
+import com.example.nuntium.ui.common.TopBarComponent
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.screens.category.categoriesList
 
@@ -74,7 +75,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuccessScreen(
-    newsList: List<Data>,
+    newsList: List<News>,
     searchText: String,
     onSearch: () -> Unit,
     onCategoryChange: (String) -> Unit,
@@ -82,6 +83,12 @@ fun SuccessScreen(
 ) {
     val focusManager = LocalFocusManager.current
     Scaffold(
+        topBar = {
+            TopBarComponent(
+                title = stringResource(R.string.browse),
+                desctiption = stringResource(R.string.discover_things_of_this_world)
+            )
+        },
         bottomBar = {
             BottomBar { }
         }
@@ -93,18 +100,8 @@ fun SuccessScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(defaultPadding)
+                    .padding(start = 20.dp, end = 20.dp,)
             ) {
-                Text(
-                    text = stringResource(R.string.browse),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = stringResource(R.string.discover_things_of_this_world),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
                 SearchContainer(
                     modifier = Modifier
                         .padding(top = 32.dp)
