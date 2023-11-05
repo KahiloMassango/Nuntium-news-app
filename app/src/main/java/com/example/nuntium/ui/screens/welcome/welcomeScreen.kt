@@ -19,12 +19,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
+import com.example.nuntium.ui.nvgraph.Route
 
 @Composable
 fun WelcomeScreen(
-    onGetStarted: () -> Unit
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -59,7 +61,9 @@ fun WelcomeScreen(
                 .padding(20.dp)
                 .fillMaxWidth(),
             text = "Get Started",
-            onClick = onGetStarted
+            onClick = {
+                navController.navigate(Route.MainScreens.route)
+            }
         )
     }
 }
@@ -67,8 +71,8 @@ fun WelcomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun welcomeScreenPreview(){
+fun WelcomeScreenPreview(){
     MaterialTheme {
-        WelcomeScreen(onGetStarted = { })
+
     }
 }
