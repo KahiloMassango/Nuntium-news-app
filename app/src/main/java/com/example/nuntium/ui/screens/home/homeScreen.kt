@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.screens.homePage
+package com.example.nuntium.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,20 +22,21 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.data.model.News
+import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.common.BottomBar
 import com.example.nuntium.ui.common.CategorySlider
 import com.example.nuntium.ui.common.NewsList
 import com.example.nuntium.ui.common.SearchContainer
-import com.example.nuntium.ui.common.TopBarComponent
+import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.screens.category.categoriesList
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    homeViewModel: HomeViewModel,
+    navController: NavHostController
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
 
@@ -46,11 +46,12 @@ fun HomeScreen(
             SuccessScreen(
                 newsList = successState.newsList,
                 searchText = homeViewModel.searchText,
+                selectedCategory = homeViewModel.selectedCategory,
                 onSearchTextChange = { homeViewModel.updateSearchText(it) },
                 onSearch = homeViewModel::getNewsByKeyword,
-                onCategoryChange = { category ->
-                    homeViewModel.getNewsByCategory(category)
-                }
+                onCategoryChange = { category -> homeViewModel.updateCategory(category) },
+                onFavorite = { homeViewModel.addToFavorite(it) },
+                navController = navController
             )
         }
         HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
@@ -75,42 +76,46 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuccessScreen(
-    newsList: List<News>,
+    modifier: Modifier = Modifier,
+    newsList: List<Article>,
     searchText: String,
     onSearch: () -> Unit,
+    selectedCategory: String,
+    onFavorite: (Article) -> Unit,
     onCategoryChange: (String) -> Unit,
     onSearchTextChange: (String) -> Unit,
+    navController: NavHostController
 ) {
     val focusManager = LocalFocusManager.current
     Scaffold(
         topBar = {
-            TopBarComponent(
+            TopBar1(
+                modifier = Modifier,
                 title = stringResource(R.string.browse),
-                desctiption = stringResource(R.string.discover_things_of_this_world)
+                description = stringResource(R.string.discover_things_of_this_world)
             )
         },
         bottomBar = {
-            BottomBar { }
+            BottomBar(navController)
         }
     ) { paddingValue ->
         Surface(
-            modifier = Modifier.padding(paddingValue),
+            modifier = modifier.padding(paddingValue),
             color = Color.Transparent
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp,)
+                    .padding(defaultPadding)
             ) {
                 SearchContainer(
                     modifier = Modifier
-                        .padding(top = 32.dp)
                         .fillMaxWidth(),
                     searchText = searchText,
                     onValueChange = { onSearchTextChange(it) },
                     onSearch = {
-                        focusManager.clearFocus()
                         onSearch()
+                        focusManager.clearFocus()
                     }
                 )
                 CategorySlider(
@@ -118,15 +123,16 @@ fun SuccessScreen(
                         .padding(top = 24.dp)
                         .fillMaxWidth(),
                     topicList = categoriesList,
+                    selectedCategory = selectedCategory,
                     onClick =  { onCategoryChange(it) }
                 )
                 NewsList(
                     modifier = Modifier
                         .padding(top = 24.dp)
                         .fillMaxWidth(),
-                    news = newsList
+                    news = newsList,
+                    onFavorite = { onFavorite(it) }
                 )
-
             }
         }
     }

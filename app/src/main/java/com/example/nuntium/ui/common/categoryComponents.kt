@@ -11,16 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,21 +36,29 @@ import com.example.nuntium.ui.theme.SfProFontFamily
 fun CategorySlider(
     modifier: Modifier = Modifier,
     topicList: List<Category>,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    selectedCategory: String
 ) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
+    val category = topicList.filter { it.name == selectedCategory }.first()
+    val index = topicList.indexOf(category)
+    val state = rememberLazyListState()
+
+    LaunchedEffect(key1 = index){
+        state.animateScrollToItem(index)
+    }
     LazyRow(
+        state = state,
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        topicList.forEachIndexed { index, topic ->
+        topicList.forEach { topic ->
             item {
                 CategoryItem(
                     topic = topic,
-                    selected = index == selected,
+                    selected = topic.name == selectedCategory,
                     onClick = { category ->
-                        selected = index
-                        onClick(category.lowercase())
+                        onClick(category)
+
                     }
                 )
             }

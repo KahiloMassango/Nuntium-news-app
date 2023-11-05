@@ -1,41 +1,45 @@
-package com.example.nuntium.ui.screens.bookmarks
+package com.example.nuntium.ui.screens.favorites
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.data.model.DataTest
 import com.example.nuntium.ui.common.BottomBar
-import com.example.nuntium.ui.common.TopBarComponent
+import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.theme.NuntiumTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nuntium.ui.screens.home.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookmarksScreen() {
+fun FavoritesScreen(
+    navController: NavHostController,
+    viewModel: FavoritesViewModel = viewModel(factory = HomeViewModel.Factory)
+) {
+    val uiState by viewModel.favoritesUiState.collectAsState()
+
     Scaffold(
         topBar = {
-            TopBarComponent(
+            TopBar1(
+                modifier = Modifier,
                 title = stringResource(R.string.bookmarks),
-                desctiption = stringResource(R.string.saved_articles_to_the_library)
+                description = stringResource(R.string.saved_articles_to_the_library)
             )
         },
         bottomBar = {
-            BottomBar {
-
-            }
+            BottomBar(navController)
         }
     ) { paddingValues ->
         Surface(
@@ -47,12 +51,12 @@ fun BookmarksScreen() {
                     .padding(defaultPadding)
                     .fillMaxSize(),
             ) {
-                BookmarkedList(
+                FavoriteArticleList(
                     modifier = Modifier
-                        .padding(top = 32.dp)
                         .fillMaxSize(),
-                    newsData = DataTest,
-                    onNewsClick = { }
+                    articles = uiState.itemList,
+                    onNewsClick = { },
+                    onDelete = { viewModel.deleteArticle(it) }
                 )
             }
         }
@@ -63,6 +67,6 @@ fun BookmarksScreen() {
 @Composable
 fun BookmarksScreenPreview() {
     NuntiumTheme {
-        BookmarksScreen()
+
     }
 }

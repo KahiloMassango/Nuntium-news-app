@@ -1,8 +1,14 @@
 package com.example.nuntium.di
 
-import com.example.nuntium.data.api.NewsApiService
-import com.example.nuntium.data.repository.NetworkNewsRepository
+import android.content.Context
+import com.example.nuntium.data.database.AppDatabase
+import com.example.nuntium.data.database.NewsLocalDataSource
+import com.example.nuntium.data.database.NewsLocalDataSourceImpl
+import com.example.nuntium.data.network.NewsApiService
+import com.example.nuntium.data.network.NewsRemoteDataSource
+import com.example.nuntium.data.network.NewsRemoteDataSourceImpl
 import com.example.nuntium.data.repository.NewsRepository
+import com.example.nuntium.data.repository.NewsRepositoryImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,8 +16,8 @@ interface AppContainer {
    val newsRepository: NewsRepository
 }
 
-class AppDefaultContainer: AppContainer {
-    private val baseUrl = "http://api.mediastack.com/v1/"
+class AppDefaultContainer(context: Context): AppContainer {
+    private val baseUrl = "https://newsapi.org/v2/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
@@ -22,7 +28,18 @@ class AppDefaultContainer: AppContainer {
         retrofit.create(NewsApiService::class.java)
     }
 
+    private val localDataSource: NewsLocalDataSource by lazy {
+        NewsLocalDataSourceImpl(AppDatabase.getDatabase(context).articleDao())
+    }
+
+    private val remoteDataSource: NewsRemoteDataSource by lazy {
+        NewsRemoteDataSourceImpl(retrofitService)
+    }
+
     override val newsRepository: NewsRepository by lazy {
-        NetworkNewsRepository(retrofitService)
+        NewsRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = remoteDataSource
+        )
     }
 }

@@ -1,6 +1,7 @@
 package com.example.nuntium.data.model
 
 data class NewsData(
-    val data: List<News>,
-    val pagination: Pagination
+    val status: String,
+    val articles: List<Article>,
+    val totalResults: Int
 )

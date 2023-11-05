@@ -22,13 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.ui.common.CustomButton
+import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 @Composable
 fun OnBoardingScreen(
-    onNext: () -> Unit
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier
@@ -90,7 +92,9 @@ fun OnBoardingScreen(
                 .padding(20.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.next),
-            onClick = onNext
+            onClick = {
+                navController.navigate(Route.WelcomeScreen.route)
+            }
         )
     }
 }
@@ -99,6 +103,6 @@ fun OnBoardingScreen(
 @Composable
 fun OnBoardingScreePreview(){
     MaterialTheme {
-        OnBoardingScreen(onNext = { })
+
     }
 }

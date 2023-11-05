@@ -1,11 +1,11 @@
-package com.example.nuntium.ui.screens.bookmarks
+package com.example.nuntium.ui.screens.favorites
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,8 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.CollectionsBookmark
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,17 +33,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nuntium.R
-import com.example.nuntium.data.model.News
+import com.example.nuntium.data.model.ArticleDto
 import com.example.nuntium.ui.theme.NuntiumTheme
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BookmarkedList(
+fun FavoriteArticleList(
     modifier: Modifier = Modifier,
-    newsData: List<News>,
-    onNewsClick: () -> Unit
+    articles: List<ArticleDto>,
+    onNewsClick: () -> Unit,
+    onDelete: (ArticleDto) -> Unit
 ) {
-    if (newsData.isEmpty()){
+    if (articles.isEmpty()){
         Column(
             modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -74,10 +78,12 @@ fun BookmarkedList(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
-            items(newsData) { news ->
-                BookmarkItem(
-                    news = news,
-                    onClick = onNewsClick
+            items(articles) { article ->
+                FavoriteArticleItem(
+                    modifier = Modifier.animateItemPlacement(),
+                    article = article,
+                    onClick = onNewsClick,
+                    onDelete = { onDelete(it) }
                 )
             }
         }
@@ -86,14 +92,16 @@ fun BookmarkedList(
 }
 
 @Composable
-fun BookmarkItem(
+fun FavoriteArticleItem(
     modifier: Modifier = Modifier,
-    news: News,
-    onClick: () -> Unit
+    article: ArticleDto,
+    onClick: () -> Unit,
+    onDelete: (ArticleDto) -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
             .clickable { onClick() }
         ,
         verticalAlignment = Alignment.CenterVertically,
@@ -107,22 +115,37 @@ fun BookmarkItem(
                 .clip(RoundedCornerShape(12.dp))
                 .size(96.dp)
         )
-        Column(
-            modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = news.category,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.tertiary,
-                maxLines = 1
-            )
-            Text(
-                text = news.title,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 2
-            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = article.source,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    maxLines = 1
+                )
+                Text(
+                    modifier = Modifier,
+                    text = article.title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 2
+                    )
+                }
+            IconButton(onClick = { onDelete(article) }) {
+                Icon(
+                    modifier = Modifier.weight(1f),
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = null,
+                    tint = Color.Red
+                )
+            }
         }
     }
 }
@@ -131,11 +154,7 @@ fun BookmarkItem(
 @Composable
 fun BookmarksComponentsPreview() {
     NuntiumTheme {
-        BookmarkedList(
-            modifier = Modifier.fillMaxWidth(),
-            newsData = emptyList(),
-            onNewsClick = { }
-        )
+
     }
 }
 

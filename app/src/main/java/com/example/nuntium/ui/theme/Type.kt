@@ -1,6 +1,5 @@
 package com.example.nuntium.ui.theme
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -19,21 +18,25 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = SfProFontFamily,
         fontWeight = FontWeight.W700,
+        lineHeight = 24.sp,
         fontSize = 24.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = SfProFontFamily,
-        fontWeight = FontWeight.W600,
+        fontWeight = FontWeight.W700,
+        lineHeight = 24.sp,
         fontSize = 20.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = SfProFontFamily,
         fontWeight = FontWeight.W600,
+        lineHeight = 24.sp,
         fontSize = 16.sp,
     ),
     bodySmall = TextStyle(
         fontFamily = SfProFontFamily,
         fontWeight = FontWeight.W400,
+        lineHeight = 24.sp,
         fontSize = 14.sp,
     )
 

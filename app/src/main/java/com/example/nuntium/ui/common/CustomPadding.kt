@@ -6,5 +6,5 @@ import androidx.compose.ui.unit.dp
 val defaultPadding = PaddingValues(
     start = 20.dp,
     end = 20.dp,
-    top = 28.dp
+    top = 20.dp
 )

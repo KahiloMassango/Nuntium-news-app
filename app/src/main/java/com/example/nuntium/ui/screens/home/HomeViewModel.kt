@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.screens.homePage
+package com.example.nuntium.ui.screens.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +9,12 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.nuntium.data.model.News
+import com.example.nuntium.data.model.Article
+import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.di.NuntiumApplication
+import com.example.nuntium.ui.screens.article.ArticleViewModel
+import com.example.nuntium.ui.screens.favorites.FavoritesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,12 +24,9 @@ import java.io.IOException
 
 
 sealed interface HomeUiState {
-    data class Success(
-        val newsList
-        : List<News> = emptyList(),
-    ) : HomeUiState
-    object Error : HomeUiState
-    object Loading : HomeUiState
+    data class Success(val newsList: List<Article>) : HomeUiState
+    data object Error : HomeUiState
+    data object Loading : HomeUiState
 }
 
 class HomeViewModel(
@@ -40,6 +40,20 @@ class HomeViewModel(
         getRecommendedNews()
     }
 
+    var selectedCategory by mutableStateOf("General")
+        private set
+
+    fun addToFavorite(article: Article){
+        viewModelScope.launch(Dispatchers.IO) {
+            newsRepository.saveLocalArticle(article.toArticleDto())
+        }
+    }
+
+    fun updateCategory(category: String) {
+        selectedCategory = category
+        getNewsByCategory()
+    }
+
     var searchText by mutableStateOf("")
         private set
 
@@ -47,11 +61,13 @@ class HomeViewModel(
         searchText = value
     }
 
-    fun getNewsByCategory(category: String) {
+    private fun getNewsByCategory() {
         viewModelScope.launch(Dispatchers.IO) {
             searchText = ""
             _uiState.value = try {
-                HomeUiState.Success(newsList = newsRepository.getNewsByCategory(category))
+                HomeUiState.Success(
+                    newsList = newsRepository.fetchRemoteNewsByCategory(selectedCategory)
+                )
             } catch (e: IOException) {
                 HomeUiState.Error
             } catch (e: HttpException) {
@@ -62,9 +78,8 @@ class HomeViewModel(
 
     fun getRecommendedNews() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.value = HomeUiState.Loading
-            _uiState.value = try {
-                HomeUiState.Success(newsList = newsRepository.getRecommendedNews())
+                _uiState.value = try {
+                HomeUiState.Success(newsList = newsRepository.fetchRemoteLatestNews())
             } catch (e: IOException) {
                 HomeUiState.Error
             } catch (e: HttpException) {
@@ -75,9 +90,10 @@ class HomeViewModel(
 
     fun getNewsByKeyword() {
         viewModelScope.launch(Dispatchers.IO) {
+            selectedCategory = "General"
             if(searchText.isNotEmpty()){
                 _uiState.value = try {
-                    HomeUiState.Success(newsRepository.getNewsByKeyword(searchText))
+                    HomeUiState.Success(newsRepository.fetchRemoteNewsByKeyword(searchText))
                 } catch (e: IOException) {
                     HomeUiState.Error
                 } catch (e: HttpException) {
@@ -93,6 +109,16 @@ class HomeViewModel(
                 val application = (this[APPLICATION_KEY] as NuntiumApplication)
                 val newsRepository = application.container.newsRepository
                 HomeViewModel(newsRepository = newsRepository)
+            }
+            initializer {
+                val application = (this[APPLICATION_KEY] as NuntiumApplication)
+                val newsRepository = application.container.newsRepository
+                ArticleViewModel(newsRepository = newsRepository)
+            }
+            initializer {
+                val application = (this[APPLICATION_KEY] as NuntiumApplication)
+                val newsRepository = application.container.newsRepository
+                FavoritesViewModel(newsRepository = newsRepository)
             }
         }
     }

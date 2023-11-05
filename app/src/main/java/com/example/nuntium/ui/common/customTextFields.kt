@@ -57,6 +57,14 @@ fun CustomTextField(
                 contentDescription = null
             )
         },
+        textStyle = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontFamily = SfProFontFamily,
+            fontWeight = FontWeight.W500,
+
+        ),
+        singleLine = true,
         placeholder = {
             Text(
                 text = placeholder,
