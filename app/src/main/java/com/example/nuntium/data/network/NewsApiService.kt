@@ -6,7 +6,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 
-const val apiKey = "ff10e9671ecf4911a8f15a2974244df1"
+const val apiKey = "API_KEY"
 const val responseSize = 2
 interface NewsApiService {
 
