@@ -1,9 +1,11 @@
 package com.example.nuntium.ui.nvgraph
 
 import ArticleScreen
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -21,12 +23,12 @@ import com.example.nuntium.ui.screens.welcome.WelcomeScreen
 fun NavGraph(
     modifier: Modifier = Modifier,
     startDestination: String,
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
+    navController: NavHostController
 ){
-    val navController = rememberNavController()
 
     NavHost(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         navController = navController,
         startDestination = startDestination,
     ) {
@@ -38,8 +40,8 @@ fun NavGraph(
         }
 
         navigation(
-            startDestination = Route.HomeScreen.route,
-            route = Route.MainScreens.route
+            route = Route.MainScreens.route,
+            startDestination = Route.ArticleScreen.route,
         ){
             composable(Route.HomeScreen.route,) {
                 HomeScreen(homeViewModel = homeViewModel, navController = navController)
@@ -47,7 +49,7 @@ fun NavGraph(
             composable(Route.CategoryScreen.route) {
                 CategoryScreen(homeViewModel = homeViewModel, navController = navController)
             }
-            composable(Route.BookmarksScreen.route) {
+            composable(Route.SavedScreen.route) {
                 FavoritesScreen(navController = navController)
             }
             composable(Route.PreferenceScreen.route) {

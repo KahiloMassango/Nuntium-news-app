@@ -24,16 +24,15 @@ import java.io.IOException
 
 
 sealed interface HomeUiState {
-    data class Success(val newsList: List<Article>) : HomeUiState
+    data class Success(val newsList: List<Article>?) : HomeUiState
     data object Error : HomeUiState
-    data object Loading : HomeUiState
 }
 
 class HomeViewModel(
     private val newsRepository: NewsRepository
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Success(emptyList()))
     var uiState = _uiState.asStateFlow()
 
     init {
@@ -50,8 +49,10 @@ class HomeViewModel(
     }
 
     fun updateCategory(category: String) {
-        selectedCategory = category
-        getNewsByCategory()
+        if (category != selectedCategory) {
+            selectedCategory = category
+            getNewsByCategory()
+        }
     }
 
     var searchText by mutableStateOf("")
@@ -69,9 +70,9 @@ class HomeViewModel(
                     newsList = newsRepository.fetchRemoteNewsByCategory(selectedCategory)
                 )
             } catch (e: IOException) {
-                HomeUiState.Error
+                HomeUiState.Success(null)
             } catch (e: HttpException) {
-                HomeUiState.Error
+                HomeUiState.Success(null)
             }
         }
     }
@@ -81,9 +82,9 @@ class HomeViewModel(
                 _uiState.value = try {
                 HomeUiState.Success(newsList = newsRepository.fetchRemoteLatestNews())
             } catch (e: IOException) {
-                HomeUiState.Error
+                    HomeUiState.Success(null)
             } catch (e: HttpException) {
-                HomeUiState.Error
+                    HomeUiState.Success(null)
             }
         }
     }
@@ -95,9 +96,9 @@ class HomeViewModel(
                 _uiState.value = try {
                     HomeUiState.Success(newsRepository.fetchRemoteNewsByKeyword(searchText))
                 } catch (e: IOException) {
-                    HomeUiState.Error
+                    HomeUiState.Success(emptyList())
                 } catch (e: HttpException) {
-                    HomeUiState.Error
+                    HomeUiState.Success(emptyList())
                 }
             }
         }
