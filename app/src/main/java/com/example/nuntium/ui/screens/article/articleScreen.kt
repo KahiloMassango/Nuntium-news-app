@@ -38,7 +38,6 @@ fun ArticleScreen(
     navController: NavHostController
 ) {
     val news = viewModel.uiState
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +52,6 @@ fun ArticleScreen(
                 modifier = Modifier
                     .height(384.dp)
                     .fillMaxWidth()
-                    //  .clip(RoundedCornerShape(12.dp))
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(
                             colors = listOf(Color.Black, Color.Black),
@@ -69,9 +67,12 @@ fun ArticleScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+
             ) {
                 ArticleTopBar(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, top = 10.dp, end = 10.dp),
                     onNavigateUp = { navController.navigate(Route.HomeScreen.route) },
                     onBookmark = { /* TODO */ },
                     onShare = { /* TODO */ }
@@ -109,7 +110,8 @@ fun ArticleScreen(
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
-                    )
+                    ),
+                    elevation = CardDefaults.elevatedCardElevation(8.dp)
                 ) {
                     Column(
                         modifier = Modifier

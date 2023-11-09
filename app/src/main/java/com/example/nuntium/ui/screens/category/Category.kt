@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.nuntium.ui.common.BottomBar
 import com.example.nuntium.ui.common.CategoryCard
 import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
@@ -54,9 +53,6 @@ fun CategoryScreen(
                 title = "Categories",
                 description = "Thousands of articles in each category"
             )
-        },
-        bottomBar = {
-            BottomBar(navController)
         }
     ) { paddingValues ->
         Surface(
@@ -79,8 +75,8 @@ fun CategoryScreen(
                     items(categoriesList) { category ->
                         CategoryCard (
                             categoryItem = category,
-                            onClick = { category ->
-                                homeViewModel.updateCategory(category)
+                            onClick = { item ->
+                                homeViewModel.updateCategory(item)
                                 navController.navigate(Route.HomeScreen.route)
                             }
                         )

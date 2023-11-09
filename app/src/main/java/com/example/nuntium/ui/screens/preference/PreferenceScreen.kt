@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.nuntium.ui.common.BottomBar
 import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
@@ -46,9 +45,6 @@ fun PreferenceScreen(
                     .fillMaxWidth(),
                 title = "Preferences",
             )
-        },
-        bottomBar = {
-            BottomBar(navController)
         }
     ) { paddingValues ->
         Surface(
