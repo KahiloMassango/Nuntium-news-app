@@ -9,7 +9,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
 import com.example.nuntium.ui.screens.category.CategoryScreen
 import com.example.nuntium.ui.screens.favorites.FavoritesScreen
 import com.example.nuntium.ui.screens.home.HomeScreen
