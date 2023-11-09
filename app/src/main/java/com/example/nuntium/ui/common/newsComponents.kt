@@ -1,5 +1,6 @@
 package com.example.nuntium.ui.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,16 +25,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.nuntium.data.model.Article
 
 @Composable
@@ -48,7 +51,8 @@ fun NewsList(
     ) {
         items(news) { news ->
             NewsCard(
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier
+                    .padding(bottom = 16.dp),
                 onClick = { /* TODO */ },
                 onFavorite = { onFavorite(it) },
                 article = news
@@ -63,28 +67,38 @@ fun NewsCard(
     modifier: Modifier = Modifier,
     onClick: (Article) -> Unit,
     onFavorite: (Article) -> Unit,
-    article: Article
+    article: Article,
+
 ) {
+    var isLoading by remember { mutableStateOf(true) }
     var isFavorite by rememberSaveable { mutableStateOf(false) }
+    val painter = rememberAsyncImagePainter(
+        model = article.urlToImage,
+        contentScale = ContentScale.Crop,
+        onLoading = { isLoading = true },
+        onSuccess = { isLoading = false }
+
+    )
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .clickable { onClick(article) },
+            .clickable(enabled = !isLoading) { onClick(article) },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AsyncImage(
-                model = article.urlToImage,
+            Image(
+                painter = painter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(192.dp)
                     .fillMaxWidth()
+                    .shimmerEffectNew(isLoading)
             )
             Box(
                 modifier = Modifier
@@ -99,7 +113,9 @@ fun NewsCard(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
-                        modifier = Modifier,
+                        modifier = Modifier
+                            .shimmerEffectNew(isLoading)
+                            .alpha(if (isLoading) 0f else 1f),
                         text = article.source.name,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
@@ -110,7 +126,10 @@ fun NewsCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .shimmerEffectNew(isLoading)
+                                .alpha(if (isLoading) 0f else 1f),
                             text = article.title,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -118,14 +137,21 @@ fun NewsCard(
                             overflow = TextOverflow.Ellipsis
                         )
                         IconButton(
+                            modifier = Modifier,
                             onClick = {
                                 onFavorite(article)
-                                isFavorite = true
+                                if (!isFavorite){
+                                    isFavorite = true
+                                }
                             },
-                            enabled = !isFavorite
+                            enabled = !isLoading
                         ) {
                             Icon(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .shimmerEffectNew(isLoading)
+                                    .alpha(if (isLoading) 0f else 1f)
+                                ,
                                 imageVector = if(isFavorite) Icons.Outlined.Bookmark else
                                     Icons.Outlined.BookmarkBorder,
                                 contentDescription = "Favorite",
