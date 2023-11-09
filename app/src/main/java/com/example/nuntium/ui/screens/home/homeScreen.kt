@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.data.model.Article
-import com.example.nuntium.ui.common.BottomBar
 import com.example.nuntium.ui.common.CategorySlider
 import com.example.nuntium.ui.common.NewsList
 import com.example.nuntium.ui.common.SearchContainer
@@ -55,7 +54,7 @@ fun HomeScreen(
             )
         }
         HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
-        HomeUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize()) // Handle loading state
+       // HomeUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize()) // Handle loading state
     }
 }
 
@@ -77,7 +76,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun SuccessScreen(
     modifier: Modifier = Modifier,
-    newsList: List<Article>,
+    newsList: List<Article>?,
     searchText: String,
     onSearch: () -> Unit,
     selectedCategory: String,
@@ -94,9 +93,6 @@ fun SuccessScreen(
                 title = stringResource(R.string.browse),
                 description = stringResource(R.string.discover_things_of_this_world)
             )
-        },
-        bottomBar = {
-            BottomBar(navController)
         }
     ) { paddingValue ->
         Surface(
@@ -126,13 +122,23 @@ fun SuccessScreen(
                     selectedCategory = selectedCategory,
                     onClick =  { onCategoryChange(it) }
                 )
-                NewsList(
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth(),
-                    news = newsList,
-                    onFavorite = { onFavorite(it) }
-                )
+                if (newsList == null){
+                    Column(
+                        modifier  = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "It appears you are offline! goto to saved articles")
+                    }
+                } else {
+                    NewsList(
+                        modifier = Modifier
+                            .padding(top = 24.dp)
+                            .fillMaxWidth(),
+                        news = newsList,
+                        onFavorite = { onFavorite(it) }
+                    )
+                }
             }
         }
     }
