@@ -30,7 +30,9 @@ import com.example.nuntium.ui.common.NewsList
 import com.example.nuntium.ui.common.SearchContainer
 import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
+import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.category.categoriesList
+import com.google.gson.Gson
 
 @Composable
 fun HomeScreen(
@@ -50,7 +52,11 @@ fun HomeScreen(
                 onSearch = homeViewModel::getNewsByKeyword,
                 onCategoryChange = { category -> homeViewModel.updateCategory(category) },
                 onFavorite = { homeViewModel.addToFavorite(it) },
-                navController = navController
+                onArticleCLick = { article ->
+                    val articleObj = Gson().toJson(article)!!
+                    navController.currentBackStackEntry?.savedStateHandle?.set("Article", articleObj)
+                    navController.navigate(Route.ArticleScreen.route)
+                }
             )
         }
         HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
@@ -83,7 +89,7 @@ fun SuccessScreen(
     onFavorite: (Article) -> Unit,
     onCategoryChange: (String) -> Unit,
     onSearchTextChange: (String) -> Unit,
-    navController: NavHostController
+    onArticleCLick: (Article) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     Scaffold(
@@ -135,8 +141,11 @@ fun SuccessScreen(
                         modifier = Modifier
                             .padding(top = 24.dp)
                             .fillMaxWidth(),
-                        news = newsList,
-                        onFavorite = { onFavorite(it) }
+                        articles = newsList,
+                        onFavorite = { onFavorite(it) },
+                        onArticleCLick = { article ->
+                            onArticleCLick(article)
+                        }
                     )
                 }
             }
