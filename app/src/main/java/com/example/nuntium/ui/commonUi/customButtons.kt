@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.common
+package com.example.nuntium.ui.commonUi
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke

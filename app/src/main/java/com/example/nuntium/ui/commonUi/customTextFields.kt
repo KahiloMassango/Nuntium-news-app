@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.common
+package com.example.nuntium.ui.commonUi
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape

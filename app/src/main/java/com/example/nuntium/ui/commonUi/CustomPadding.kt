@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.common
+package com.example.nuntium.ui.commonUi
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
