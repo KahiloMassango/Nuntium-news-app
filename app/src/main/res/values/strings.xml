@@ -28,4 +28,6 @@
     <string name="empty_bookmarks_list">You haven\'t saved any articles yet. Start reading and bookmarking them now</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="saved_articles_to_the_library">Saved articles to the library</string>
+    <string name="thousands_of_articles_in_each_category">Thousands of articles in each category</string>
+    <string name="categories">Categories</string>
 </resources>

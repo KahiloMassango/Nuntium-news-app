@@ -14,9 +14,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.nuntium.R
 import com.example.nuntium.ui.common.CategoryCard
 import com.example.nuntium.ui.common.TopBar1
 import com.example.nuntium.ui.common.defaultPadding
@@ -50,8 +52,8 @@ fun CategoryScreen(
         topBar = {
             TopBar1(
                 modifier = Modifier,
-                title = "Categories",
-                description = "Thousands of articles in each category"
+                title = stringResource(R.string.categories),
+                description = stringResource(R.string.thousands_of_articles_in_each_category)
             )
         }
     ) { paddingValues ->
