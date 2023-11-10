@@ -17,7 +17,6 @@ data class Article(
     val publishedAt: String? = null,
     val content: String,
 )
-
 @Entity(tableName = "articles")
 data class ArticleDto(
     @PrimaryKey(autoGenerate = true)

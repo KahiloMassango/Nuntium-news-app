@@ -42,18 +42,21 @@ import com.example.nuntium.data.model.Article
 @Composable
 fun NewsList(
     modifier: Modifier = Modifier,
-    news: List<Article>,
-    onFavorite: (Article) -> Unit
+    articles: List<Article>,
+    onFavorite: (Article) -> Unit,
+    onArticleCLick: (Article) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         //verticalArrangement = Arrangement.spacedBy()
     ) {
-        items(news) { news ->
-            NewsCard(
+        items(articles) { news ->
+            ArticleCard(
                 modifier = Modifier
                     .padding(bottom = 16.dp),
-                onClick = { /* TODO */ },
+                onClick = { article ->
+                        onArticleCLick(article)
+                },
                 onFavorite = { onFavorite(it) },
                 article = news
             )
@@ -63,7 +66,7 @@ fun NewsList(
 
 
 @Composable
-fun NewsCard(
+fun ArticleCard(
     modifier: Modifier = Modifier,
     onClick: (Article) -> Unit,
     onFavorite: (Article) -> Unit,

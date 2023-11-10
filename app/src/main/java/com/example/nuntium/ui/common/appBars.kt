@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.OpenInBrowser
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -147,7 +146,7 @@ fun ArticleTopBar(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
     onBookmark: () -> Unit,
-    onShare: () -> Unit
+    onOpenInBrowser: () -> Unit
 ){
     Row(
         modifier = modifier,
@@ -170,9 +169,9 @@ fun ArticleTopBar(
                     tint = Color.White
                 )
             }
-            IconButton(onClick = onShare) {
+            IconButton(onClick = onOpenInBrowser) {
                 Icon(
-                    imageVector = Icons.Outlined.Share,
+                    imageVector = Icons.Outlined.OpenInBrowser,
                     contentDescription = null,
                     tint = Color.White
                 )
