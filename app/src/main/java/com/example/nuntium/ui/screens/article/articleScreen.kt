@@ -1,3 +1,6 @@
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -5,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,6 +21,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.common.ArticleTopBar
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.article.ArticleViewModel
@@ -35,18 +41,21 @@ import com.example.nuntium.ui.theme.SfProFontFamily
 @Composable
 fun ArticleScreen(
     viewModel: ArticleViewModel = viewModel(factory = HomeViewModel.Factory),
-    navController: NavHostController
+    navController: NavHostController,
+    article: Article
 ) {
-    val news = viewModel.uiState
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Box(
             modifier = Modifier
+                .fillMaxSize()
+                .safeContentPadding()
         ) {
             AsyncImage(
-                model = news.urlToImage,
+                model = article.urlToImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -54,13 +63,13 @@ fun ArticleScreen(
                     .fillMaxWidth()
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(
-                            colors = listOf(Color.Black, Color.Black),
+                            colors = listOf(Color.Transparent, Color.Black),
                             startY = size.height / 3,
                             endY = size.height
                         )
                         onDrawWithContent {
                             drawContent()
-                            drawRect(gradient, alpha = 0.3f, blendMode = BlendMode.Multiply)
+                            drawRect(gradient, alpha = 5f, blendMode = BlendMode.Multiply)
                         }
                     }
             )
@@ -73,9 +82,13 @@ fun ArticleScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 10.dp, top = 10.dp, end = 10.dp),
-                    onNavigateUp = { navController.navigate(Route.HomeScreen.route) },
+                    onNavigateUp = { navController.navigate(Route.HomeScreen.route){
+                        popUpTo(Route.HomeScreen.route)
+                    } },
                     onBookmark = { /* TODO */ },
-                    onShare = { /* TODO */ }
+                    onOpenInBrowser = {
+                        openInBrowser(context, article.url)
+                    }
                 )
                 Spacer(modifier = Modifier.height(96.dp))
                 Card(
@@ -87,7 +100,7 @@ fun ArticleScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = news.source.name,
+                        text = article.source.name,
                         color = MaterialTheme.colorScheme.background,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.W600,
@@ -97,7 +110,7 @@ fun ArticleScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    text = news.title,
+                    text = article.title,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White,
                     maxLines = 2,
@@ -125,7 +138,7 @@ fun ArticleScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = news.content,
+                            text = article.content,
                             fontSize = 16.sp,
                             lineHeight = 24.sp,
                             fontFamily = SfProFontFamily,
@@ -137,6 +150,12 @@ fun ArticleScreen(
             }
         }
     }
+}
+
+private fun openInBrowser(context: Context, url: String) {
+    val webpage: Uri = Uri.parse(url)
+    val intent = Intent(Intent.ACTION_VIEW, webpage)
+    context.startActivity(intent)
 }
 
 
