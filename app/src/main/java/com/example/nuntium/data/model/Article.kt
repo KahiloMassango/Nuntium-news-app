@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Article(
-    val id: Int,
     val source: Source,
     val title: String,
     val description: String,

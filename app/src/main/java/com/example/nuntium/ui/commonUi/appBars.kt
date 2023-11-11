@@ -145,7 +145,7 @@ fun TopBar1(
 fun ArticleTopBar(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
-    onBookmark: () -> Unit,
+    onSave: () -> Unit,
     onOpenInBrowser: () -> Unit
 ){
     Row(
@@ -162,7 +162,7 @@ fun ArticleTopBar(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            IconButton(onClick = onBookmark) {
+            IconButton(onClick = onSave) {
                 Icon(
                     imageVector = Icons.Outlined.BookmarkBorder,
                     contentDescription = null,

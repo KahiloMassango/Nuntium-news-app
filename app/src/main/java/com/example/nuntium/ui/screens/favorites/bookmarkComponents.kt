@@ -42,7 +42,7 @@ import com.example.nuntium.ui.theme.NuntiumTheme
 fun FavoriteArticleList(
     modifier: Modifier = Modifier,
     articles: List<ArticleDto>,
-    onNewsClick: () -> Unit,
+    onNewsClick: (ArticleDto) -> Unit,
     onDelete: (ArticleDto) -> Unit
 ) {
     if (articles.isEmpty()){
@@ -82,7 +82,7 @@ fun FavoriteArticleList(
                 FavoriteArticleItem(
                     modifier = Modifier.animateItemPlacement(),
                     article = article,
-                    onClick = onNewsClick,
+                    onClick = { onNewsClick(it) },
                     onDelete = { onDelete(it) }
                 )
             }
@@ -95,14 +95,14 @@ fun FavoriteArticleList(
 fun FavoriteArticleItem(
     modifier: Modifier = Modifier,
     article: ArticleDto,
-    onClick: () -> Unit,
+    onClick: (ArticleDto) -> Unit,
     onDelete: (ArticleDto) -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .clickable { onClick() }
+            .clickable { onClick(article) }
         ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
