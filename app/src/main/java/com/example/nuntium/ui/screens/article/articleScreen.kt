@@ -1,6 +1,7 @@
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,28 +25,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.commonUi.ArticleTopBar
-import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.screens.home.HomeViewModel
-import com.example.nuntium.ui.theme.NuntiumTheme
 import com.example.nuntium.ui.theme.SfProFontFamily
+
 
 @Composable
 fun ArticleScreen(
     viewModel: ArticleViewModel = viewModel(factory = HomeViewModel.Factory),
     navController: NavHostController,
-    article: Article?
+
 ) {
     val context = LocalContext.current
-
+    val article = viewModel.uiState
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -84,9 +82,13 @@ fun ArticleScreen(
                         .fillMaxWidth()
                         .padding(start = 10.dp, top = 10.dp, end = 10.dp),
                     onNavigateUp = {
-                        navController.navigate(Route.HomeScreen.route)
+                        navController.navigateUp()
                                    },
-                    onBookmark = { /* TODO */ },
+                    onSave = {
+                        viewModel.saveArticleLocally(article!!)
+                        Toast.makeText(context, "Article saved", Toast.LENGTH_SHORT)
+                            .show()
+                    },
                     onOpenInBrowser = {
                         openInBrowser(context, article?.url ?: "")
                     }
@@ -157,15 +159,6 @@ private fun openInBrowser(context: Context, url: String) {
     val webpage: Uri = Uri.parse(url)
     val intent = Intent(Intent.ACTION_VIEW, webpage)
     context.startActivity(intent)
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ArticlePreview() {
-    NuntiumTheme {
-
-    }
 }
 
 
