@@ -13,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.ui.commonUi.TopBar1
 import com.example.nuntium.ui.commonUi.defaultPadding
+import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.home.HomeViewModel
 import com.example.nuntium.ui.theme.NuntiumTheme
 
@@ -49,9 +51,13 @@ fun FavoritesScreen(
             ) {
                 FavoriteArticleList(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    articles = uiState.itemList,
-                    onNewsClick = { },
+                        .fillMaxSize()
+                        .padding(bottom = 8.dp),
+                    articles = uiState.articles,
+                    onNewsClick = { articleDto ->
+                        viewModel.setArticle(articleDto)
+                        navController.navigate(Route.ArticleScreen.route)
+                    },
                     onDelete = { viewModel.deleteArticle(it) }
                 )
             }

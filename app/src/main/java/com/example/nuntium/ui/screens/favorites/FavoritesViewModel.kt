@@ -1,9 +1,13 @@
 package com.example.nuntium.ui.screens.favorites
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.ArticleDto
+import com.example.nuntium.data.model.Source
 import com.example.nuntium.data.repository.NewsRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +16,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-class FavoritesViewModel(private val newsRepository: NewsRepository): ViewModel() {
+class FavoritesViewModel(
+    private val newsRepository: NewsRepository,
+    private val savedStateHandle: SavedStateHandle
+): ViewModel() {
 
     val favoritesUiState: StateFlow<FavoritesUiState> = newsRepository.getAllLocalNews()
         .map { FavoritesUiState(it) }
@@ -22,6 +29,13 @@ class FavoritesViewModel(private val newsRepository: NewsRepository): ViewModel(
             initialValue = FavoritesUiState()
         )
 
+    fun setArticle(article: ArticleDto) {
+        viewModelScope.launch {
+            val articleObj = Gson().toJson(article.toArticle())
+            savedStateHandle["Article"] = articleObj
+        }
+    }
+
     fun deleteArticle(article: ArticleDto) {
         viewModelScope.launch(Dispatchers.IO) {
             newsRepository.deleteLocalArticle(article)
@@ -29,5 +43,14 @@ class FavoritesViewModel(private val newsRepository: NewsRepository): ViewModel(
     }
 
 }
-
-data class FavoritesUiState(val itemList: List<ArticleDto> = listOf())
+private fun ArticleDto.toArticle(): Article =
+    Article(
+        source = Source(this.source, this.source),
+        content = this.content,
+        title = this.title,
+        description = this.description,
+        url = this.url,
+        urlToImage = this.urlToImage,
+        publishedAt = this.publishedAt
+    )
+data class FavoritesUiState(val articles: List<ArticleDto> = listOf())
