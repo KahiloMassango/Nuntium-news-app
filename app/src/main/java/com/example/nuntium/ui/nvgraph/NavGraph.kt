@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.screens.category.CategoryScreen
 import com.example.nuntium.ui.screens.favorites.FavoritesScreen
 import com.example.nuntium.ui.screens.home.HomeScreen
@@ -17,7 +16,6 @@ import com.example.nuntium.ui.screens.language.LanguageScreen
 import com.example.nuntium.ui.screens.onboarding.OnBoardingScreen
 import com.example.nuntium.ui.screens.preference.PreferenceScreen
 import com.example.nuntium.ui.screens.welcome.WelcomeScreen
-import com.google.gson.Gson
 
 @Composable
 fun NavGraph(
@@ -54,9 +52,7 @@ fun NavGraph(
             LanguageScreen(navController = navController)
         }
         composable(Route.ArticleScreen.route) {
-            val get = navController.previousBackStackEntry?.savedStateHandle?.get<String>("Article")
-            val article = Gson().fromJson(get, Article::class.java)
-            ArticleScreen(navController = navController, article = article)
+            ArticleScreen(navController = navController)
         }
     }
 }
