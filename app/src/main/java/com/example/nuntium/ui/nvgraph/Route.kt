@@ -4,7 +4,6 @@ sealed class Route(
     val route: String
 ){
     data object OnBoardingScreen: Route("onBoardingScreen")
-    data object MainScreens: Route("mainScreens")
     data object HomeScreen: Route("homeScreen")
     data object ArticleScreen: Route("articleScreen")
     data object SavedScreen: Route("savedScreen")
