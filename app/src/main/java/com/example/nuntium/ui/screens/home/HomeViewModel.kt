@@ -3,6 +3,7 @@ package com.example.nuntium.ui.screens.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -15,6 +16,7 @@ import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.di.NuntiumApplication
 import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.screens.favorites.FavoritesViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +31,8 @@ sealed interface HomeUiState {
 }
 
 class HomeViewModel(
-    private val newsRepository: NewsRepository
+    private val newsRepository: NewsRepository,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Success(emptyList()))
@@ -39,10 +42,17 @@ class HomeViewModel(
         getRecommendedNews()
     }
 
+    fun setArticle(article: Article) {
+        viewModelScope.launch {
+            val articleObj = Gson().toJson(article)
+            savedStateHandle["Article"] = articleObj
+        }
+    }
+
     var selectedCategory by mutableStateOf("General")
         private set
 
-    fun addToFavorite(article: Article){
+    fun saveArticleLocally(article: Article){
         viewModelScope.launch(Dispatchers.IO) {
             newsRepository.saveLocalArticle(article.toArticleDto())
         }
@@ -106,20 +116,21 @@ class HomeViewModel(
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
+            val savedStateHandle = SavedStateHandle()
             initializer {
                 val application = (this[APPLICATION_KEY] as NuntiumApplication)
                 val newsRepository = application.container.newsRepository
-                HomeViewModel(newsRepository = newsRepository)
+                HomeViewModel(newsRepository = newsRepository, savedStateHandle)
             }
             initializer {
                 val application = (this[APPLICATION_KEY] as NuntiumApplication)
                 val newsRepository = application.container.newsRepository
-                ArticleViewModel(newsRepository = newsRepository)
+                ArticleViewModel(newsRepository = newsRepository, savedStateHandle)
             }
             initializer {
                 val application = (this[APPLICATION_KEY] as NuntiumApplication)
                 val newsRepository = application.container.newsRepository
-                FavoritesViewModel(newsRepository = newsRepository)
+                FavoritesViewModel(newsRepository = newsRepository, savedStateHandle)
             }
         }
     }

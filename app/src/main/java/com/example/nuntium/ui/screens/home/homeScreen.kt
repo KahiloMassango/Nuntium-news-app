@@ -32,7 +32,6 @@ import com.example.nuntium.ui.commonUi.TopBar1
 import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.category.categoriesList
-import com.google.gson.Gson
 
 @Composable
 fun HomeScreen(
@@ -51,10 +50,9 @@ fun HomeScreen(
                 onSearchTextChange = { homeViewModel.updateSearchText(it) },
                 onSearch = homeViewModel::getNewsByKeyword,
                 onCategoryChange = { category -> homeViewModel.updateCategory(category) },
-                onFavorite = { homeViewModel.addToFavorite(it) },
+                onFavorite = { homeViewModel.saveArticleLocally(it) },
                 onArticleCLick = { article ->
-                    val articleObj = Gson().toJson(article)
-                    navController.currentBackStackEntry?.savedStateHandle?.set("Article", articleObj)
+                    homeViewModel.setArticle(article)
                     navController.navigate(Route.ArticleScreen.route)
                 }
             )
