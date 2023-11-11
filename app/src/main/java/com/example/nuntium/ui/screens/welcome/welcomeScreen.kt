@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.ui.common.CustomButton
+import com.example.nuntium.ui.commonUi.CustomButton
 import com.example.nuntium.ui.nvgraph.Route
 
 @Composable
@@ -62,7 +62,7 @@ fun WelcomeScreen(
                 .fillMaxWidth(),
             text = "Get Started",
             onClick = {
-                navController.navigate(Route.MainScreens.route)
+                navController.navigate(Route.HomeScreen.route)
             }
         )
     }

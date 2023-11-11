@@ -31,7 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.nuntium.data.model.Article
-import com.example.nuntium.ui.common.ArticleTopBar
+import com.example.nuntium.ui.commonUi.ArticleTopBar
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.screens.home.HomeViewModel
@@ -42,9 +42,10 @@ import com.example.nuntium.ui.theme.SfProFontFamily
 fun ArticleScreen(
     viewModel: ArticleViewModel = viewModel(factory = HomeViewModel.Factory),
     navController: NavHostController,
-    article: Article
+    article: Article?
 ) {
     val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +56,7 @@ fun ArticleScreen(
                 .safeContentPadding()
         ) {
             AsyncImage(
-                model = article.urlToImage,
+                model = article?.urlToImage ?: "",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -82,12 +83,12 @@ fun ArticleScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 10.dp, top = 10.dp, end = 10.dp),
-                    onNavigateUp = { navController.navigate(Route.HomeScreen.route){
-                        popUpTo(Route.HomeScreen.route)
-                    } },
+                    onNavigateUp = {
+                        navController.navigate(Route.HomeScreen.route)
+                                   },
                     onBookmark = { /* TODO */ },
                     onOpenInBrowser = {
-                        openInBrowser(context, article.url)
+                        openInBrowser(context, article?.url ?: "")
                     }
                 )
                 Spacer(modifier = Modifier.height(96.dp))
@@ -100,7 +101,7 @@ fun ArticleScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = article.source.name,
+                        text = article?.source?.name ?: "",
                         color = MaterialTheme.colorScheme.background,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.W600,
@@ -110,7 +111,7 @@ fun ArticleScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    text = article.title,
+                    text = article?.title ?: "",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White,
                     maxLines = 2,
@@ -138,7 +139,7 @@ fun ArticleScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = article.content,
+                            text = article?.content ?: "",
                             fontSize = 16.sp,
                             lineHeight = 24.sp,
                             fontFamily = SfProFontFamily,

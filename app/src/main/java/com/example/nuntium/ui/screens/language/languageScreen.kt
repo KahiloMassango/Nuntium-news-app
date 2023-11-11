@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.nuntium.ui.common.defaultPadding
+import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.SfProFontFamily
 

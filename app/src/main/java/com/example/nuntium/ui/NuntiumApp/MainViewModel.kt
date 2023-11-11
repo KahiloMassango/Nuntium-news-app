@@ -8,7 +8,7 @@ import com.example.nuntium.ui.nvgraph.Route
 
 class MainViewModel: ViewModel() {
 
-    var startDestination by mutableStateOf(Route.MainScreens.route)
+    var startDestination by mutableStateOf(Route.HomeScreen.route)
         private set
 
 

@@ -19,9 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.ui.common.CategoryCard
-import com.example.nuntium.ui.common.TopBar1
-import com.example.nuntium.ui.common.defaultPadding
+import com.example.nuntium.ui.commonUi.CategoryCard
+import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.home.HomeViewModel
 import com.example.nuntium.ui.theme.NuntiumTheme

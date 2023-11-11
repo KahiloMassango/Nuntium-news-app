@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.data.model.Article
-import com.example.nuntium.ui.common.CategorySlider
-import com.example.nuntium.ui.common.NewsList
-import com.example.nuntium.ui.common.SearchContainer
-import com.example.nuntium.ui.common.TopBar1
-import com.example.nuntium.ui.common.defaultPadding
+import com.example.nuntium.ui.commonUi.CategorySlider
+import com.example.nuntium.ui.commonUi.NewsList
+import com.example.nuntium.ui.commonUi.SearchContainer
+import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.category.categoriesList
 import com.google.gson.Gson
@@ -53,14 +53,13 @@ fun HomeScreen(
                 onCategoryChange = { category -> homeViewModel.updateCategory(category) },
                 onFavorite = { homeViewModel.addToFavorite(it) },
                 onArticleCLick = { article ->
-                    val articleObj = Gson().toJson(article)!!
+                    val articleObj = Gson().toJson(article)
                     navController.currentBackStackEntry?.savedStateHandle?.set("Article", articleObj)
                     navController.navigate(Route.ArticleScreen.route)
                 }
             )
         }
         HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
-       // HomeUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize()) // Handle loading state
     }
 }
 

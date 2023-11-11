@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.ui.common.CustomButton
+import com.example.nuntium.ui.commonUi.CustomButton
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.SfProFontFamily
 

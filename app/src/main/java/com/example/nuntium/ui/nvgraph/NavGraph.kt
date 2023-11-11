@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.screens.category.CategoryScreen
 import com.example.nuntium.ui.screens.favorites.FavoritesScreen
@@ -39,31 +38,25 @@ fun NavGraph(
         composable(Route.WelcomeScreen.route) {
             WelcomeScreen(navController = navController)
         }
-
-        navigation(
-            route = Route.MainScreens.route,
-            startDestination = Route.HomeScreen.route,
-        ){
-            composable(Route.HomeScreen.route,) {
-                HomeScreen(homeViewModel = homeViewModel, navController = navController)
-            }
-            composable(Route.CategoryScreen.route) {
+        composable(Route.HomeScreen.route,) {
+            HomeScreen(homeViewModel = homeViewModel, navController = navController)
+        }
+        composable(Route.CategoryScreen.route) {
                 CategoryScreen(homeViewModel = homeViewModel, navController = navController)
-            }
-            composable(Route.SavedScreen.route) {
-                FavoritesScreen(navController = navController)
-            }
-            composable(Route.PreferenceScreen.route) {
-                PreferenceScreen(navController = navController)
-            }
-            composable(Route.LanguageScreen.route) {
-                LanguageScreen(navController = navController)
-            }
-            composable(Route.ArticleScreen.route) {
-                val get = navController.previousBackStackEntry?.savedStateHandle?.get<String>("Article")
-                val article = Gson().fromJson(get, Article::class.java)
-                ArticleScreen(navController = navController, article = article)
-            }
+        }
+        composable(Route.SavedScreen.route) {
+            FavoritesScreen(navController = navController)
+        }
+        composable(Route.PreferenceScreen.route) {
+            PreferenceScreen(navController = navController)
+        }
+        composable(Route.LanguageScreen.route) {
+            LanguageScreen(navController = navController)
+        }
+        composable(Route.ArticleScreen.route) {
+            val get = navController.previousBackStackEntry?.savedStateHandle?.get<String>("Article")
+            val article = Gson().fromJson(get, Article::class.java)
+            ArticleScreen(navController = navController, article = article)
         }
     }
 }

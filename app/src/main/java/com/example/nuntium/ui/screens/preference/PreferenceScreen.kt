@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.nuntium.ui.common.TopBar1
-import com.example.nuntium.ui.common.defaultPadding
+import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.NuntiumTheme
 
