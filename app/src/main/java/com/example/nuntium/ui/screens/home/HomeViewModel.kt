@@ -14,8 +14,10 @@ import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.di.NuntiumApplication
+import com.example.nuntium.ui.nuntium.MainAppViewModel
 import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.screens.favorites.FavoritesViewModel
+import com.example.nuntium.ui.screens.welcome.WelcomeViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -131,6 +133,14 @@ class HomeViewModel(
                 val application = (this[APPLICATION_KEY] as NuntiumApplication)
                 val newsRepository = application.container.newsRepository
                 FavoritesViewModel(newsRepository = newsRepository, savedStateHandle)
+            }
+            initializer {
+                val application = (this[APPLICATION_KEY] as NuntiumApplication)
+                MainAppViewModel(appPreferencesRepository = application.appPreferencesRepository)
+            }
+            initializer {
+                val application = (this[APPLICATION_KEY] as NuntiumApplication)
+                WelcomeViewModel(appPreferencesRepository = application.appPreferencesRepository)
             }
         }
     }
