@@ -13,7 +13,7 @@ interface NewsRepository {
 
     suspend fun getLocalArticleById(id: Int): ArticleDto
 
-     fun getAllLocalNews(): Flow<List<ArticleDto>>
+    fun getAllLocalNews(): Flow<List<ArticleDto>>
 
     suspend fun fetchRemoteNewsByCategory(category: String): List<Article>
 

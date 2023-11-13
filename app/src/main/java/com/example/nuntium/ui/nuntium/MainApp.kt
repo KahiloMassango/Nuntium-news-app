@@ -1,4 +1,4 @@
-package com.example.nuntium.ui.NuntiumApp
+package com.example.nuntium.ui.nuntium
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,15 +11,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.nuntium.ui.commonUi.BottomBar
 import com.example.nuntium.ui.nvgraph.NavGraph
 import com.example.nuntium.ui.nvgraph.bottomBarRoutes
+import com.example.nuntium.ui.screens.home.HomeViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainApp(
-    viewModel: MainViewModel = MainViewModel(),
+    viewModel: MainAppViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
 
     val navController: NavHostController = rememberNavController()
-    val startDestination = viewModel.startDestination
+    val startDestination = viewModel.startScreen
+
 
     val shouldShowBottomBar: Boolean = navController
         .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes

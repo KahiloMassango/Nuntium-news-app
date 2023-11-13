@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.nuntium.ui.NuntiumApp.MainApp
+import com.example.nuntium.ui.nuntium.MainApp
 import com.example.nuntium.ui.theme.NuntiumTheme
 
 class MainActivity : ComponentActivity() {
