@@ -45,7 +45,6 @@ data class NavItem(
 
 val NavigationItemIcons = listOf(
     NavItem(R.drawable.home_icon, Route.HomeScreen.route),
-    NavItem(R.drawable.categories_icon, Route.CategoryScreen.route),
     NavItem(R.drawable.bookmark_icon, Route.SavedScreen.route),
     NavItem(R.drawable.profile_icon, Route.PreferenceScreen.route)
 )

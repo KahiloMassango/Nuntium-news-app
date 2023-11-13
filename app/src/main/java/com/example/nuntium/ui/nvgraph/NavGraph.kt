@@ -39,9 +39,6 @@ fun NavGraph(
         composable(Route.HomeScreen.route,) {
             HomeScreen(homeViewModel = homeViewModel, navController = navController)
         }
-        composable(Route.CategoryScreen.route) {
-                CategoryScreen(homeViewModel = homeViewModel, navController = navController)
-        }
         composable(Route.SavedScreen.route) {
             FavoritesScreen(navController = navController)
         }
