@@ -19,14 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.ui.commonUi.CustomButton
 import com.example.nuntium.ui.nvgraph.Route
+import com.example.nuntium.ui.screens.home.HomeViewModel
 
 @Composable
 fun WelcomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: WelcomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -62,6 +65,8 @@ fun WelcomeScreen(
                 .fillMaxWidth(),
             text = "Get Started",
             onClick = {
+                viewModel.updateStartScreenPreference()
+                navController.popBackStack()
                 navController.navigate(Route.HomeScreen.route)
             }
         )
