@@ -21,7 +21,6 @@ import com.example.nuntium.ui.screens.welcome.WelcomeScreen
 fun NavGraph(
     modifier: Modifier = Modifier,
     startDestination: String,
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
     navController: NavHostController
 ){
 
@@ -37,7 +36,7 @@ fun NavGraph(
             WelcomeScreen(navController = navController)
         }
         composable(Route.HomeScreen.route,) {
-            HomeScreen(homeViewModel = homeViewModel, navController = navController)
+            HomeScreen(navController = navController)
         }
         composable(Route.SavedScreen.route) {
             FavoritesScreen(navController = navController)

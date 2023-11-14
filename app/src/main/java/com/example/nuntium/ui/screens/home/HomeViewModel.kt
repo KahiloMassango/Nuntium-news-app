@@ -37,7 +37,7 @@ class HomeViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Success(emptyList()))
+    private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState.Success(emptyList()))
     var uiState = _uiState.asStateFlow()
 
     init {
