@@ -7,26 +7,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nuntium.data.repository.AppPreferencesRepository
 import com.example.nuntium.ui.nvgraph.Route
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class MainAppViewModel(
+
+class MainAppViewModel @Inject constructor(
     appPreferencesRepository: AppPreferencesRepository
 ): ViewModel() {
 
-
-     var startScreen by mutableStateOf(Route.HomeScreen.route)
+    var splashCondition by mutableStateOf(true)
         private set
+
+    var startScreen by mutableStateOf(Route.OnBoardingScreen.route)
+        private set
+
     init {
-        viewModelScope.launch {
-                appPreferencesRepository.shouldStartFromHomeScreen.collect { condition ->
-                    startScreen = if (condition) {
-                        Route.HomeScreen.route
-                    } else {
-                        Route.OnBoardingScreen.route
-                    }
-                }
-        }
+        appPreferencesRepository.shouldStartFromHomeScreen.onEach { state ->
+            if(state) {
+                startScreen = Route.HomeScreen.route
+            } else {
+                startScreen = Route.OnBoardingScreen.route
+            }
+            delay(300)
+            splashCondition = false
+        }.launchIn(viewModelScope)
     }
+
 }
 
 

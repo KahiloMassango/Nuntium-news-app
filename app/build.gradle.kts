@@ -3,7 +3,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -54,6 +56,11 @@ android {
     }
 }
 
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
 
     val roomVersion = "2.6.0"
@@ -67,11 +74,15 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.5.4")
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")

@@ -8,15 +8,17 @@ import com.example.nuntium.data.model.ArticleDto
 import com.example.nuntium.data.model.Source
 import com.example.nuntium.data.repository.NewsRepository
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class FavoritesViewModel(
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {

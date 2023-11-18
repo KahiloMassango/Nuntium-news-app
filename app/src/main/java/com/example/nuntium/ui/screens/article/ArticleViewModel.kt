@@ -9,11 +9,13 @@ import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class ArticleViewModel(
+@HiltViewModel
+class ArticleViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {

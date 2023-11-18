@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
 import com.example.nuntium.data.model.Article
@@ -36,7 +36,7 @@ import com.example.nuntium.ui.screens.category.categoriesList
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
+    homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     val uiState by homeViewModel.uiState.collectAsState()

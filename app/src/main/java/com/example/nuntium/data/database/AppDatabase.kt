@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.nuntium.data.model.ArticleDto
 
-@Database(entities = [ArticleDto::class], version = 2)
+@Database(entities = [ArticleDto::class], version = 2, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun articleDao(): ArticleDao
@@ -24,6 +24,4 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
     }
-
-
 }

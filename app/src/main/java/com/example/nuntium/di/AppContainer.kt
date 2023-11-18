@@ -1,7 +1,6 @@
 package com.example.nuntium.di
 
 import android.content.Context
-import androidx.room.RoomDatabase
 import com.example.nuntium.data.database.AppDatabase
 import com.example.nuntium.data.database.ArticleDao
 import com.example.nuntium.data.database.NewsLocalDataSource
@@ -9,39 +8,58 @@ import com.example.nuntium.data.database.NewsLocalDataSourceImpl
 import com.example.nuntium.data.network.NewsApiService
 import com.example.nuntium.data.network.NewsRemoteDataSource
 import com.example.nuntium.data.network.NewsRemoteDataSourceImpl
+import com.example.nuntium.data.repository.AppPreferencesRepository
 import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.data.repository.NewsRepositoryImpl
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-interface AppContainer {
-   val newsRepository: NewsRepository
-}
+@Module
+@InstallIn(SingletonComponent::class)
+object AppContainer {
 
-class AppDefaultContainer(context: Context): AppContainer {
-    private val baseUrl = "https://newsapi.org/v2/"
-
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(baseUrl)
-        .build()
-
-    private val retrofitService: NewsApiService by lazy {
-        retrofit.create(NewsApiService::class.java)
-    }
-    private val databaseService: ArticleDao by lazy {
-        AppDatabase.getDatabase(context).articleDao()
+    @Provides
+    @Singleton
+    fun provideRetrofitService(): NewsApiService {
+        return Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://newsapi.org/v2/")
+            .build()
+            .create(NewsApiService::class.java)
     }
 
-    private val localDataSource: NewsLocalDataSource by lazy {
-        NewsLocalDataSourceImpl(databaseService)
+    @Provides
+    @Singleton
+    fun providesDatabaseService(@ApplicationContext context: Context): ArticleDao {
+        return AppDatabase.getDatabase(context).articleDao()
     }
 
-    private val remoteDataSource: NewsRemoteDataSource by lazy {
-        NewsRemoteDataSourceImpl(retrofitService)
+    @Provides
+    fun providesLocalDataSource(databaseService: ArticleDao): NewsLocalDataSource {
+        return  NewsLocalDataSourceImpl(databaseService)
     }
 
-    override val newsRepository: NewsRepository by lazy {
-        NewsRepositoryImpl(localDataSource = localDataSource, remoteDataSource = remoteDataSource)
+    @Provides
+    fun provideRemoteDataSource(retrofitService: NewsApiService): NewsRemoteDataSource {
+        return NewsRemoteDataSourceImpl(retrofitService)
+    }
+
+    @Provides
+    fun provideAppPreferencesRepository(@ApplicationContext context: Context): AppPreferencesRepository {
+        return AppPreferencesRepository(context)
+    }
+
+    @Provides
+    fun provideNewsRepository(
+        remoteDataSource: NewsRemoteDataSource,
+        localDataSource: NewsLocalDataSource
+    ): NewsRepository {
+        return NewsRepositoryImpl(localDataSource, remoteDataSource)
     }
 }

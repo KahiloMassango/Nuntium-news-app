@@ -5,26 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
-import com.example.nuntium.di.NuntiumApplication
-import com.example.nuntium.ui.nuntium.MainAppViewModel
-import com.example.nuntium.ui.screens.article.ArticleViewModel
-import com.example.nuntium.ui.screens.favorites.FavoritesViewModel
-import com.example.nuntium.ui.screens.welcome.WelcomeViewModel
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 
 sealed interface HomeUiState {
@@ -32,7 +25,8 @@ sealed interface HomeUiState {
     data object Error : HomeUiState
 }
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
@@ -112,35 +106,6 @@ class HomeViewModel(
                 } catch (e: HttpException) {
                     HomeUiState.Success(emptyList())
                 }
-            }
-        }
-    }
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            val savedStateHandle = SavedStateHandle()
-            initializer {
-                val application = (this[APPLICATION_KEY] as NuntiumApplication)
-                val newsRepository = application.container.newsRepository
-                HomeViewModel(newsRepository = newsRepository, savedStateHandle)
-            }
-            initializer {
-                val application = (this[APPLICATION_KEY] as NuntiumApplication)
-                val newsRepository = application.container.newsRepository
-                ArticleViewModel(newsRepository = newsRepository, savedStateHandle)
-            }
-            initializer {
-                val application = (this[APPLICATION_KEY] as NuntiumApplication)
-                val newsRepository = application.container.newsRepository
-                FavoritesViewModel(newsRepository = newsRepository, savedStateHandle)
-            }
-            initializer {
-                val application = (this[APPLICATION_KEY] as NuntiumApplication)
-                MainAppViewModel(appPreferencesRepository = application.appPreferencesRepository)
-            }
-            initializer {
-                val application = (this[APPLICATION_KEY] as NuntiumApplication)
-                WelcomeViewModel(appPreferencesRepository = application.appPreferencesRepository)
             }
         }
     }

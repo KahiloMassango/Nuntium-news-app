@@ -27,21 +27,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.nuntium.ui.commonUi.ArticleTopBar
 import com.example.nuntium.ui.screens.article.ArticleViewModel
-import com.example.nuntium.ui.screens.home.HomeViewModel
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 
 @Composable
 fun ArticleScreen(
-    viewModel: ArticleViewModel = viewModel(factory = HomeViewModel.Factory),
+    viewModel: ArticleViewModel = hiltViewModel(),
     navController: NavHostController,
 
-) {
+    ) {
     val context = LocalContext.current
     val article = viewModel.uiState
     Column(

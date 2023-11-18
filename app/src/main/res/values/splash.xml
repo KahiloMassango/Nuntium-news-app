@@ -4,5 +4,6 @@
         <item name="windowSplashScreenBackground">#475AD7</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.Nuntium</item>
+        <item name="windowSplashScreenAnimationDuration">600</item>
     </style>
 </resources>
