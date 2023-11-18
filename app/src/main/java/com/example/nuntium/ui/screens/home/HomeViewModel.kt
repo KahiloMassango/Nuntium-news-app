@@ -1,6 +1,5 @@
 package com.example.nuntium.ui.screens.home
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -32,7 +31,7 @@ class HomeViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState.Success(emptyList()))
+    private val _uiState: MutableStateFlow<List<Article>?> = MutableStateFlow(emptyList())
     var uiState = _uiState.asStateFlow()
 
     init {
@@ -71,41 +70,38 @@ class HomeViewModel @Inject constructor(
 
     private fun getNewsByCategory() {
         viewModelScope.launch(Dispatchers.IO) {
-            searchText = ""
             _uiState.value = try {
-                HomeUiState.Success(
-                    newsList = newsRepository.fetchRemoteNewsByCategory(selectedCategory)
-                )
+                    newsRepository.fetchRemoteNewsByCategory(selectedCategory)
             } catch (e: IOException) {
-                HomeUiState.Success(null)
+                emptyList()
             } catch (e: HttpException) {
-                HomeUiState.Success(null)
+                emptyList()
             }
         }
     }
 
     fun getRecommendedNews() {
         viewModelScope.launch(Dispatchers.IO) {
-                _uiState.value = try {
-                HomeUiState.Success(newsList = newsRepository.fetchRemoteLatestNews())
+            _uiState.value = try {
+                newsRepository.fetchRemoteLatestNews()
             } catch (e: IOException) {
-                    HomeUiState.Success(null)
+                emptyList()
             } catch (e: HttpException) {
-                    HomeUiState.Success(null)
+                emptyList()
             }
         }
     }
 
-    fun getNewsByKeyword() {
+    fun searchNewsByKeyword() {
         viewModelScope.launch(Dispatchers.IO) {
             selectedCategory = "General"
             if(searchText.isNotEmpty()){
                 _uiState.value = try {
-                    HomeUiState.Success(newsRepository.fetchRemoteNewsByKeyword(searchText))
+                    newsRepository.fetchRemoteNewsByKeyword(searchText)
                 } catch (e: IOException) {
-                    HomeUiState.Success(emptyList())
+                    emptyList()
                 } catch (e: HttpException) {
-                    HomeUiState.Success(emptyList())
+                    emptyList()
                 }
             }
         }
