@@ -12,11 +12,9 @@ sealed class Route(
     data object WelcomeScreen: Route("welcomeScreen")
 }
 
-private val bottomBarScreens: List<Route> = listOf(
-    Route.HomeScreen,
-    Route.SavedScreen,
-    Route.PreferenceScreen
+val bottomBarRoutes: List<String> = listOf(
+    Route.HomeScreen.route,
+    Route.SavedScreen.route,
+    Route.PreferenceScreen.route
 )
-
-val bottomBarRoutes = bottomBarScreens.map { it.route }
 

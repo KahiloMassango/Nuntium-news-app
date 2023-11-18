@@ -16,18 +16,19 @@ fun MainApp(
     navController: NavHostController = rememberNavController(),
     startDestination: String
 ) {
-    val shouldShowBottomBar: Boolean = navController
+    val showBottomBar: Boolean = navController
         .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
 
     Scaffold(
         bottomBar = {
-            if(shouldShowBottomBar){
+            if(showBottomBar){
                 BottomBar(navController)
             }
         }
     ) { paddingValue ->
         NavGraph(
             modifier = Modifier.padding(paddingValue),
+            navController = navController,
             startDestination = startDestination,
         )
     }

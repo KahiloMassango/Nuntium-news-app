@@ -19,7 +19,7 @@ import com.example.nuntium.ui.screens.welcome.WelcomeScreen
 fun NavGraph(
     modifier: Modifier = Modifier,
     startDestination: String,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController
 ){
 
     NavHost(

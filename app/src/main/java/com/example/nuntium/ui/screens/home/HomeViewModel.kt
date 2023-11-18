@@ -1,5 +1,6 @@
 package com.example.nuntium.ui.screens.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -40,7 +41,7 @@ class HomeViewModel @Inject constructor(
 
     fun setArticle(article: Article) {
         viewModelScope.launch {
-            val articleObj = Gson().toJson(article)
+            val articleObj = Gson().toJson(article)!!
             savedStateHandle["Article"] = articleObj
         }
     }
