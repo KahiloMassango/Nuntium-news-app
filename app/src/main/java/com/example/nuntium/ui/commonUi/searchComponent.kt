@@ -17,12 +17,14 @@ fun SearchContainer(
     modifier: Modifier = Modifier,
     searchText: String,
     onValueChange: (String) -> Unit,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
+    onMicClick: () -> Unit
 ) {
     CustomTextField(
         modifier = modifier,
         value = searchText,
         onValueChange = { onValueChange(it) },
+        onMicClick = onMicClick,
         placeholder = stringResource(R.string.search_placeholder),
         leadingIcon = Icons.Outlined.Search,
         trailingIcon = Icons.Outlined.MicNone,

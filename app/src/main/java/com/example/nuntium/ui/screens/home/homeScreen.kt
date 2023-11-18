@@ -1,25 +1,29 @@
 package com.example.nuntium.ui.screens.home
 
-import androidx.compose.foundation.Image
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,62 +38,32 @@ import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.screens.category.categoriesList
 
-@Composable
-fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    navController: NavHostController
-) {
-    val uiState by homeViewModel.uiState.collectAsState()
-
-    when(uiState) {
-        is HomeUiState.Success -> {
-            val successState = uiState as HomeUiState.Success
-            SuccessScreen(
-                newsList = successState.newsList,
-                searchText = homeViewModel.searchText,
-                selectedCategory = homeViewModel.selectedCategory,
-                onSearchTextChange = { homeViewModel.updateSearchText(it) },
-                onSearch = homeViewModel::getNewsByKeyword,
-                onCategoryChange = { category -> homeViewModel.updateCategory(category) },
-                onFavorite = { homeViewModel.saveArticleLocally(it) },
-                onArticleCLick = { article ->
-                    homeViewModel.setArticle(article)
-                    navController.navigate(Route.ArticleScreen.route)
-                }
-            )
-        }
-        HomeUiState.Error -> ErrorScreen(retryAction = homeViewModel::getRecommendedNews)
-    }
-}
-
-
-@Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "loading failed", modifier = Modifier.padding(16.dp))
-        Button(onClick = retryAction) {
-            Text("retry")
-        }
-    }
-}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuccessScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
-    newsList: List<Article>?,
-    searchText: String,
-    onSearch: () -> Unit,
-    selectedCategory: String,
-    onFavorite: (Article) -> Unit,
-    onCategoryChange: (String) -> Unit,
-    onSearchTextChange: (String) -> Unit,
-    onArticleCLick: (Article) -> Unit
+    viewModel: HomeViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val voiceToTextParser = VoiceToTextParser(context)
+    var canRecord by remember { mutableStateOf(false) }
+    val recordAudioLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            canRecord = isGranted
+        }
+    )
+
+    LaunchedEffect(key1 = recordAudioLauncher) {
+        recordAudioLauncher.launch(Manifest.permission.RECORD_AUDIO)
+    }
+
+    val state by voiceToTextParser.state.collectAsState()
+
+
     Scaffold(
         topBar = {
             TopBar1(
@@ -111,22 +85,35 @@ fun SuccessScreen(
                 SearchContainer(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    searchText = searchText,
-                    onValueChange = { onSearchTextChange(it) },
+                    searchText = viewModel.searchText,
+                    onValueChange = { viewModel.updateSearchText(it) },
                     onSearch = {
-                        onSearch()
+                        viewModel.searchNewsByKeyword()
                         focusManager.clearFocus()
+                    },
+                    onMicClick = {
+                        if(state.isSpeaking){
+                            voiceToTextParser.stopListening()
+                            viewModel.updateSearchText("")
+                        } else {
+                            voiceToTextParser.startListening()
+                            viewModel.updateSearchText("Listening...")
+                        }
                     }
                 )
+                LaunchedEffect(key1 = state.spokenText){
+                    viewModel.updateSearchText(state.spokenText)
+                    viewModel.searchNewsByKeyword()
+                }
                 CategorySlider(
                     modifier = Modifier
                         .padding(top = 24.dp)
                         .fillMaxWidth(),
                     topicList = categoriesList,
-                    selectedCategory = selectedCategory,
-                    onClick =  { onCategoryChange(it) }
+                    selectedCategory = viewModel.selectedCategory,
+                    onClick =  { viewModel.updateCategory(it) }
                 )
-                if (newsList == null){
+                if (uiState == null){
                     Column(
                         modifier  = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center,
@@ -139,10 +126,11 @@ fun SuccessScreen(
                         modifier = Modifier
                             .padding(top = 24.dp)
                             .fillMaxWidth(),
-                        articles = newsList,
-                        onFavorite = { onFavorite(it) },
+                        articles = uiState!!,
+                        onFavorite = { viewModel.saveArticleLocally(it) },
                         onArticleCLick = { article ->
-                            onArticleCLick(article)
+                            viewModel.setArticle(article)
+                            navController.navigate(Route.ArticleScreen.route)
                         }
                     )
                 }
@@ -151,11 +139,4 @@ fun SuccessScreen(
     }
 }
 
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = "Loading"
-    )
-}
+

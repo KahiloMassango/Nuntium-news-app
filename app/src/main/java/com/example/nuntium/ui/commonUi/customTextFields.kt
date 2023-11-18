@@ -40,9 +40,10 @@ fun CustomTextField(
     keyboardAction: KeyboardActions,
     leadingIcon: ImageVector,
     trailingIcon: ImageVector? = null,
-    onTrailingIConClick: () -> Unit = { }
+    onMicClick: () -> Unit = { }
 
 ) {
+
     OutlinedTextField(
         modifier = modifier
             .height(56.dp),
@@ -86,7 +87,9 @@ fun CustomTextField(
         ),
         trailingIcon = {
             if (trailingIcon != null) {
-                IconButton(onClick = onTrailingIConClick) {
+                IconButton(
+                    onClick = onMicClick
+                ) {
                     Icon(
                         imageVector = trailingIcon,
                         contentDescription = null
