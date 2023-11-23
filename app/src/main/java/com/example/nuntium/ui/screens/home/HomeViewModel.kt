@@ -3,12 +3,12 @@ package com.example.nuntium.ui.screens.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
+import com.example.nuntium.di.CustomHandler
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ sealed interface HomeUiState {
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val handler: CustomHandler
 ): ViewModel() {
 
     private val _uiState: MutableStateFlow<List<Article>?> = MutableStateFlow(emptyList())
@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
     fun setArticle(article: Article) {
         viewModelScope.launch {
             val articleObj = Gson().toJson(article)!!
-            savedStateHandle["Article"] = articleObj
+            handler.savedStateHandle["Article"] = articleObj
         }
     }
 
@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendedNews() {
+    private fun getRecommendedNews() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = try {
                 newsRepository.fetchRemoteLatestNews()

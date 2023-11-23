@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.nuntium.ui.commonUi.ArticleTopBar
+import com.example.nuntium.ui.commonUi.CustomText
 import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.theme.SfProFontFamily
 
@@ -61,13 +63,14 @@ fun ArticleScreen(
                     .fillMaxWidth()
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black),
-                            startY = size.height / 3,
+                            colors = listOf(Color.Black, Color.Black, Color.Black),
+                            startY = size.height ,
                             endY = size.height
                         )
+
                         onDrawWithContent {
                             drawContent()
-                            drawRect(gradient, alpha = 5f, blendMode = BlendMode.Multiply)
+                            drawRect(gradient, alpha = 0.2f, blendMode = BlendMode.Multiply)
                         }
                     }
             )
@@ -139,13 +142,12 @@ fun ArticleScreen(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            text = article?.content ?: "",
-                            fontSize = 16.sp,
-                            lineHeight = 24.sp,
-                            fontFamily = SfProFontFamily,
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF666C8E)
+                        CustomText(
+                            text = article!!.content,
+                            link = article.url,
+                            onCLick = {
+                                openInBrowser(context, article.url)
+                            }
                         )
                     }
                 }

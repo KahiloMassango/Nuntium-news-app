@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -29,14 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.data.model.Article
 import com.example.nuntium.ui.commonUi.CategorySlider
 import com.example.nuntium.ui.commonUi.NewsList
 import com.example.nuntium.ui.commonUi.SearchContainer
-import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.TopBar
 import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
-import com.example.nuntium.ui.screens.category.categoriesList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,15 +62,17 @@ fun HomeScreen(
     }
 
     val state by voiceToTextParser.state.collectAsState()
-
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar1(
-                modifier = Modifier,
+            TopBar(
                 title = stringResource(R.string.browse),
-                description = stringResource(R.string.discover_things_of_this_world)
+                description = stringResource(R.string.discover_things_of_this_world),
+                scrollBehavior = scrollBehavior
             )
+
         }
     ) { paddingValue ->
         Surface(
@@ -109,7 +111,6 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(top = 24.dp)
                         .fillMaxWidth(),
-                    topicList = categoriesList,
                     selectedCategory = viewModel.selectedCategory,
                     onClick =  { viewModel.updateCategory(it) }
                 )
