@@ -1,4 +1,4 @@
-package com.example.nuntium.data.database
+package com.example.nuntium.data.local
 
 import com.example.nuntium.data.model.ArticleDto
 import kotlinx.coroutines.flow.Flow

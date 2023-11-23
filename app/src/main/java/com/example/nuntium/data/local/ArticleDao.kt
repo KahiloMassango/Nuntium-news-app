@@ -1,4 +1,4 @@
-package com.example.nuntium.data.database
+package com.example.nuntium.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete

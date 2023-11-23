@@ -16,13 +16,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -139,20 +142,66 @@ fun CustomClickableText(
 
 }
 
+fun AnnotatedString.Builder.appendLink(linkText: String, linkUrl: String) {
+    pushStringAnnotation(tag = linkUrl, annotation = linkUrl)
+    append(linkText)
+    pop()
+}
+
+fun AnnotatedString.onLinkClick(offset: Int, onClick: () -> Unit) {
+    getStringAnnotations(start = offset, end = offset).firstOrNull()?.let {
+        onClick()
+    }
+}
+
+@Composable
+fun CustomText(
+    text: String,
+    link: String,
+    onCLick: () -> Unit
+) {
+    val anotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(
+            fontSize = 16.sp,
+            //lineHeight = 24.sp,
+            fontFamily = SfProFontFamily,
+            fontWeight = FontWeight(400),
+        )) {
+            append(text.subSequence(1..196))
+        }
+
+
+        append("... ")
+
+        withStyle(style = SpanStyle(
+            fontSize = 16.sp,
+            fontFamily = SfProFontFamily,
+            fontWeight = FontWeight(400),
+            color = MaterialTheme.colorScheme.primary,
+            textDecoration = TextDecoration.Underline
+        )) {
+            appendLink("See more", link)
+        }
+    }
+
+    ClickableText(
+        text = anotatedString,
+        onClick = { offset ->
+            anotatedString.onLinkClick(
+                offset = offset,
+                onClick = onCLick
+            )
+
+        }
+    )
+
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun CustomTextFieldPreview(){
     MaterialTheme {
-        CustomTextField(
-            value = "tt",
-            onValueChange = { },
-            placeholder = "Email Address",
-           leadingIcon = Icons.Default.Lock,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            keyboardAction = KeyboardActions()
-        )
+
     }
 }

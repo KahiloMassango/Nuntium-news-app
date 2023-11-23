@@ -1,4 +1,4 @@
-package com.example.nuntium.data.network
+package com.example.nuntium.data.remote
 
 import com.example.nuntium.data.model.NewsData
 import retrofit2.http.GET

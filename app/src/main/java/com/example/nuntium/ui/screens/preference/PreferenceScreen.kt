@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.TopBar
 import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.NuntiumTheme
@@ -40,10 +40,8 @@ fun PreferenceScreen(
 ) {
     Scaffold(
         topBar = {
-            TopBar1(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                title = "Preferences",
+            TopBar(
+                title = "Preferences"
             )
         }
     ) { paddingValues ->

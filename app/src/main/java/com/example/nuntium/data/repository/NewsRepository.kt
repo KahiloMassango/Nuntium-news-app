@@ -1,9 +1,9 @@
 package com.example.nuntium.data.repository
 
-import com.example.nuntium.data.database.NewsLocalDataSource
+import com.example.nuntium.data.local.NewsLocalDataSource
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.ArticleDto
-import com.example.nuntium.data.network.NewsRemoteDataSource
+import com.example.nuntium.data.remote.NewsRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {

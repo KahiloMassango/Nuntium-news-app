@@ -30,7 +30,7 @@ class MainAppViewModel @Inject constructor(
             } else {
                 startScreen = Route.OnBoardingScreen.route
             }
-            delay(300)
+            delay(900)
             splashCondition = false
         }.launchIn(viewModelScope)
     }

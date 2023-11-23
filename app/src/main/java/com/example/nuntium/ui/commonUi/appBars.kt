@@ -17,15 +17,21 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.OpenInBrowser
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -115,32 +121,6 @@ fun NavBarItem(
 }
 
 @Composable
-fun TopBar1(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String = "",
-) {
-    Column(
-        modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 28.dp)
-    ) {
-        Text(
-            modifier = Modifier,
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp),
-            text = description,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.tertiary
-        )
-    }
-
-}
-
-@Composable
 fun ArticleTopBar(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
@@ -180,6 +160,43 @@ fun ArticleTopBar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar(
+    modifier: Modifier = Modifier,
+    title: String,
+    description: String? = null,
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+) {
+    TopAppBar(
+        modifier = modifier,
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
+            Column(
+                modifier = modifier.padding(top = 10.dp, bottom = 10.dp)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                if (description != null){
+                    Text(
+                        modifier = Modifier
+                            .padding(top = 5.dp),
+                        text = description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                }
+            }
+        }
+    )
+}
 
 @Preview(showBackground = true)
 @Composable

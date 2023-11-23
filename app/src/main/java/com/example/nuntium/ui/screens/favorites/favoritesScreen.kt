@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.nuntium.R
-import com.example.nuntium.ui.commonUi.TopBar1
+import com.example.nuntium.ui.commonUi.TopBar
 import com.example.nuntium.ui.commonUi.defaultPadding
 import com.example.nuntium.ui.nvgraph.Route
 import com.example.nuntium.ui.theme.NuntiumTheme
@@ -32,7 +32,7 @@ fun FavoritesScreen(
 
     Scaffold(
         topBar = {
-            TopBar1(
+            TopBar(
                 modifier = Modifier,
                 title = stringResource(R.string.bookmarks),
                 description = stringResource(R.string.saved_articles_to_the_library)

@@ -1,4 +1,4 @@
-package com.example.nuntium.data.database
+package com.example.nuntium.data.local
 
 import android.content.Context
 import androidx.room.Database
