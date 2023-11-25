@@ -36,5 +36,5 @@ The UI credit goes to [FreebieFlux](https://freebieflux.com/)  - Project [on fig
     ## Screens
 
 | Splash screen | Home Screen | Favorite screen | Detail screen |
-|--|--|--|
+|--|--|--|--|
 | ![splash screen](assets/splashscreen.png) | ![home screen](assets/homescree.png) | ![favorite screen](assets/favoritescreen.png) | ![detail screen](assets/detail_screen.png)  |
