@@ -1,6 +1,6 @@
 # Nuntium news app
 
-Hi! I have buit this simple news app called **Nuntium** to apply the knowledge that I got from Google intro course  [Android Basics with Compose](https://developer.android.com/courses/android-basics-compose/course).
+Hi! I have built this simple news app called **Nuntium** to apply the knowledge that I got from Google intro course  [Android Basics with Compose](https://developer.android.com/courses/android-basics-compose/course).
 
 [Android Basics with Compose](https://developer.android.com/courses/android-basics-compose/course) is a self-paced, online course on how to build Android apps using the latest best practices. It covers the basics of building apps with Jetpack Compose, the recommended toolkit for building user interfaces on Android.
 
