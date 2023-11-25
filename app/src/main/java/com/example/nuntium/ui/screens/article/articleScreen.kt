@@ -1,3 +1,5 @@
+package com.example.nuntium.ui.screens.article
+
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +34,6 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.nuntium.ui.commonUi.ArticleTopBar
 import com.example.nuntium.ui.commonUi.CustomText
-import com.example.nuntium.ui.screens.article.ArticleViewModel
 import com.example.nuntium.ui.theme.SfProFontFamily
 
 
@@ -55,7 +55,7 @@ fun ArticleScreen(
                 .safeContentPadding()
         ) {
             AsyncImage(
-                model = article?.urlToImage ?: "",
+                model = article.urlToImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -87,12 +87,12 @@ fun ArticleScreen(
                         navController.navigateUp()
                                    },
                     onSave = {
-                        viewModel.saveArticleLocally(article!!)
+                        viewModel.saveArticleLocally(article)
                         Toast.makeText(context, "Article saved", Toast.LENGTH_SHORT)
                             .show()
                     },
                     onOpenInBrowser = {
-                        openInBrowser(context, article?.url ?: "")
+                        openInBrowser(context, article.url)
                     }
                 )
                 Spacer(modifier = Modifier.height(96.dp))
@@ -105,7 +105,7 @@ fun ArticleScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = article?.source?.name ?: "",
+                        text = article.source.name,
                         color = MaterialTheme.colorScheme.background,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.W600,
@@ -115,7 +115,7 @@ fun ArticleScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    text = article?.title ?: "",
+                    text = article.title,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White,
                     maxLines = 2,
@@ -143,7 +143,7 @@ fun ArticleScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         CustomText(
-                            text = article!!.content,
+                            text = article.content,
                             link = article.url,
                             onCLick = {
                                 openInBrowser(context, article.url)

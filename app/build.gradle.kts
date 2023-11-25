@@ -87,6 +87,9 @@ dependencies {
     // navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+
     // viewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")

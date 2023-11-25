@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.toArticleDto
 import com.example.nuntium.data.repository.NewsRepository
+import com.example.nuntium.data.repository.WorkManagerRepository
 import com.example.nuntium.di.CustomHandler
+import com.example.nuntium.workers.OUTPUT_PATH
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,17 +19,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.UUID
 import javax.inject.Inject
 
-
-sealed interface HomeUiState {
-    data class Success(val newsList: List<Article>?) : HomeUiState
-    data object Error : HomeUiState
-}
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
+    private val workManagerRepository: WorkManagerRepository,
     private val handler: CustomHandler
 ): ViewModel() {
 
@@ -50,7 +49,11 @@ class HomeViewModel @Inject constructor(
 
     fun saveArticleLocally(article: Article){
         viewModelScope.launch(Dispatchers.IO) {
-            newsRepository.saveLocalArticle(article.toArticleDto())
+            val name = UUID.randomUUID().toString()
+            val fileName = "$OUTPUT_PATH/$name.jpg"
+            val dto = article.copy(urlToImage = fileName)
+            workManagerRepository.downloadImage(article.urlToImage, name)
+            newsRepository.saveLocalArticle(dto.toArticleDto())
         }
     }
 
@@ -73,9 +76,9 @@ class HomeViewModel @Inject constructor(
             _uiState.value = try {
                     newsRepository.fetchRemoteNewsByCategory(selectedCategory)
             } catch (e: IOException) {
-                emptyList()
+                null
             } catch (e: HttpException) {
-                emptyList()
+                null
             }
         }
     }
@@ -85,9 +88,9 @@ class HomeViewModel @Inject constructor(
             _uiState.value = try {
                 newsRepository.fetchRemoteLatestNews()
             } catch (e: IOException) {
-                emptyList()
+                null
             } catch (e: HttpException) {
-                emptyList()
+                null
             }
         }
     }
@@ -99,9 +102,9 @@ class HomeViewModel @Inject constructor(
                 _uiState.value = try {
                     newsRepository.fetchRemoteNewsByKeyword(searchText)
                 } catch (e: IOException) {
-                    emptyList()
+                    null
                 } catch (e: HttpException) {
-                    emptyList()
+                    null
                 }
             }
         }

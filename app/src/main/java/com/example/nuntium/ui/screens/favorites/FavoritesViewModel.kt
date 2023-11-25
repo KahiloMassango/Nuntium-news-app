@@ -1,12 +1,13 @@
 package com.example.nuntium.ui.screens.favorites
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nuntium.data.model.Article
 import com.example.nuntium.data.model.ArticleDto
 import com.example.nuntium.data.model.Source
 import com.example.nuntium.data.repository.NewsRepository
+import com.example.nuntium.data.repository.WorkManagerRepository
+import com.example.nuntium.di.CustomHandler
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val workManagerRepository: WorkManagerRepository,
+    private val handler: CustomHandler
 ): ViewModel() {
 
     val favoritesUiState: StateFlow<FavoritesUiState> = newsRepository.getAllLocalNews()
@@ -34,12 +36,13 @@ class FavoritesViewModel @Inject constructor(
     fun setArticle(article: ArticleDto) {
         viewModelScope.launch {
             val articleObj = Gson().toJson(article.toArticle())
-            savedStateHandle["Article"] = articleObj
+            handler.savedStateHandle["Article"] = articleObj
         }
     }
 
     fun deleteArticle(article: ArticleDto) {
         viewModelScope.launch(Dispatchers.IO) {
+            workManagerRepository.deleteImage(article.urlToImage)
             newsRepository.deleteLocalArticle(article)
         }
     }

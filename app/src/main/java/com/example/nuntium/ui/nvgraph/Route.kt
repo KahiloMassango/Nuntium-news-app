@@ -7,7 +7,6 @@ sealed class Route(
     data object HomeScreen: Route("homeScreen")
     data object ArticleScreen: Route("articleScreen")
     data object SavedScreen: Route("savedScreen")
-    data object LanguageScreen: Route("languageScreen")
     data object PreferenceScreen: Route("preferenceScreen")
     data object WelcomeScreen: Route("welcomeScreen")
 }

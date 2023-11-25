@@ -5,8 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,15 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -102,45 +97,6 @@ fun CustomTextField(
         }
     )
 }
-@Composable
-fun CustomClickableText(
-    modifier: Modifier = Modifier,
-    firstText: String,
-    secondText: String,
-    onCLick: () -> Unit
-) {
-    val text = buildAnnotatedString{
-
-        withStyle(style = SpanStyle(
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 16.sp,
-
-            )
-        ) {
-            append(firstText)
-        }
-        // add space between the two texts
-        append(" ")
-        withStyle(style = SpanStyle(
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.W500,
-            fontSize = 16.sp
-        )
-        ) {
-            append(secondText)
-        }
-    }
-
-    ClickableText(
-        modifier = modifier,
-        text = text,
-        onClick = { onCLick() },
-        style = TextStyle(
-            textAlign = TextAlign.Center
-        )
-    )
-
-}
 
 fun AnnotatedString.Builder.appendLink(linkText: String, linkUrl: String) {
     pushStringAnnotation(tag = linkUrl, annotation = linkUrl)
@@ -160,6 +116,7 @@ fun CustomText(
     link: String,
     onCLick: () -> Unit
 ) {
+    val regexRule = "\\[.*?]".toRegex()
     val anotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(
             fontSize = 16.sp,
@@ -167,11 +124,11 @@ fun CustomText(
             fontFamily = SfProFontFamily,
             fontWeight = FontWeight(400),
         )) {
-            append(text.subSequence(1..196))
+            append(text.replace(regexRule, ""))
         }
 
 
-        append("... ")
+        //append("... ")
 
         withStyle(style = SpanStyle(
             fontSize = 16.sp,

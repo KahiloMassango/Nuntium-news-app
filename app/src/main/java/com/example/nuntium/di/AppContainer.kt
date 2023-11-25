@@ -12,6 +12,8 @@ import com.example.nuntium.data.remote.NewsRemoteDataSourceImpl
 import com.example.nuntium.data.repository.AppPreferencesRepository
 import com.example.nuntium.data.repository.NewsRepository
 import com.example.nuntium.data.repository.NewsRepositoryImpl
+import com.example.nuntium.data.repository.WorkManagerRepository
+import com.example.nuntium.data.repository.WorkManagerRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,6 +49,12 @@ object AppContainer {
     @Singleton
     fun provideSavedStateHandle(): CustomHandler {
         return HandlerImpl(SavedStateHandle())
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManagerRepository(@ApplicationContext context: Context): WorkManagerRepository {
+        return WorkManagerRepositoryImpl(context)
     }
 
 
