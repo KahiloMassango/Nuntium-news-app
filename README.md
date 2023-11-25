@@ -33,4 +33,4 @@ The UI credit goes to [FreebieFlux](https://freebieflux.com/)  - Project [on fig
 
 | Splash screen | Home Screen | Favorite screen |
 |--|--|--|
-| ![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/splashscreen.png?raw=true) | ![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/homescree.png?raw=true) |![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/favoritescreen.png?raw=true)|
+| ![enter image description here](assets/splashscreen.png) | ![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/homescree.png?raw=true) |![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/favoritescreen.png?raw=true)|
