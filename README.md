@@ -30,3 +30,7 @@ The UI credit goes to [FreebieFlux](https://freebieflux.com/)  - Project [on fig
     * [Coil Compose](https://coil-kt.github.io/coil/) - An image loading library for Android backed by Kotlin Coroutines.
 * Other
     * [Gson](https://github.com/google/gson) - A Java serialization/deserialization library to convert Java Objects into JSON and back
+
+| Splash screen | Home Screen | Favorite screen |
+|--|--|--|
+| ![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/splashscreen.png?raw=true) | ![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/homescree.png?raw=true) |![enter image description here](https://github.com/KahiloMassango/Nuntium-news-app/blob/main/assets/favoritescreen.png?raw=true)|
