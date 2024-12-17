@@ -120,7 +120,7 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "It appears you are offline! goto to saved articles")
+                        Text(text = "Parece que está offline, vá para notícias salvas")
                     }
                 } else {
                     NewsList(
