@@ -4,7 +4,7 @@ Hi! I have built this simple news app called **Nuntium** to apply the knowledge 
 
 [Android Basics with Compose](https://developer.android.com/courses/android-basics-compose/course) is a self-paced, online course on how to build Android apps using the latest best practices. It covers the basics of building apps with Jetpack Compose, the recommended toolkit for building user interfaces on Android.
 
-The UI credit goes to [FreebieFlux](https://freebieflux.com/)  - Project [on figma](https://www.figma.com/file/qNiGRGxZOsk9VXe2to3O6H/nuntium-news-app?type=design&node-id=29-3&mode=design)
+The UI credit goes to [FreebieFlux](https://freebieflux.com/)  - Project [on Dribbble](https://dribbble.com/shots/14654061-Nuntium-News-App-Freebie)
 
 ##  Architecture
 
